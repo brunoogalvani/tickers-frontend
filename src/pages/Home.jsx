@@ -11,27 +11,27 @@ function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <>
-      <header className='flex justify-between items-center bg-red-900 text-white p-4 h-[100px]'>
+    <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
+      <header className='flex justify-between   items-center text-white p-4 h-[80px] bg-[#9C554D]/50'>
         <div className='flex justify-between items-center w-[600px]'>
           <img className='h-[50px]' src={TickersLogo} />
-          <div className='h-[35px] flex items-center gap-2 border border-[#aa692d] rounded-[15px] p-2 bg-white'>
+          <div className='h-[35px] flex items-center gap-2 border border-[#aa692d] rounded-[15px] p-2 bg-gray-800/30'>
             <img className='h-[15px]' src={Lupa} />
-            <input className='w-[350px] text-black text-[14px] outline-none' type="text" />
+            <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" />
           </div>
         </div>
         <div className='flex justify-evenly items-center w-[600px]'>
-          <button className='flex items-center' id='local' onClick={() => setIsModalOpen(true)}>
+          <button className='flex gap-1 items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' id='local' onClick={() => setIsModalOpen(true)}>
             <img className='w-[35px] h-[35px]' src={local} />
             <div>
-              <p className='text-white'>Seu Local</p>
+              <p className='text-black font-bold'>Seu Local</p>
             </div>
           </button>
-          <button onClick={() => navigate('/login')} className='flex gap-1 items-center'>
+          <button onClick={() => navigate('/login')} className='flex gap-1 items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]'>
             <img className='w-[35px] h-[35px]' src={Conta} />
             <div className='text-start'>
-              <p className='text-white'>Entrar</p>
-              <span className='text-[#e7b75c]'>Cadastrar-se</span>
+              <p className='text-black font-bold'>Entrar</p>
+              <span className='text-white font-bold'>Cadastrar-se</span>
             </div>
           </button>
         </div>
@@ -40,7 +40,7 @@ function Home() {
       <main></main>
 
       {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
-    </>
+    </div>
   )
 }
 
