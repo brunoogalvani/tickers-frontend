@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import ModalLogin from '../components/ModalLogin'
+import user from '../assets/img/usuario-de-perfil.png'
+
 
 function Login() {
     const navigate = useNavigate()
@@ -8,29 +10,49 @@ function Login() {
 
     return (
         <>
-            <body
-                className="min-h-screen text-white flex items-center justify-center
-                           bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]"
-            >
-                <div className="flex flex-col items-center space-y-4">
-                    <p className="text-2xl font-semibold">Página de Login não Feita</p>
-
-                    <button
-                        onClick={() => navigate('/')}
-                        className="flex items-center px-4 py-2 bg-white text-black rounded hover:bg-gray-800 transition"
-                    >
-                        Voltar para Home
-                    </button>
+            <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
+                
+              
+                <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-[450px] w-[400px]">
+                    <p className="text-2xl font-semibold">Login</p>
+            
+                    <img className="w-[75px] h-[75px]" src={user} alt="User" />
+                    
+                    <input 
+                        className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
+                        type="text"
+                        placeholder="Digite seu e-mail ou Usuário"
+                    />
+                    <input 
+                        className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
+                        type="password"
+                        placeholder="Digite sua senha"
+                    />
 
                     <button 
-                        className="flex items-center px-4 py-2 bg-white text-black rounded hover:bg-gray-800 transition"
-                        id="login"
-                        onClick={() => setIsModalOpen(true)}
+                        className="flex items-center justify-center px-4 py-2 bg-[#ffffff]/40 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-3px]"
+                        id="entrar"
+                      
                     >
-                        Abrir Modal
+                        Entrar
+                    </button>
+                    <button onClick={() => navigate('/Register')}
+                        className="flex items-center justify-center px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-10px]"
+                        id="criar-conta"
+                        
+                    >
+                        Criar conta
                     </button>
                 </div>
-            </body>
+
+          
+                <button
+                    onClick={() => navigate('/')}
+                    className="mt-8 flex items-center px-6 py-2 bg-white text-black rounded hover:bg-gray-800 hover:text-white transition"
+                >
+                    Voltar para Home
+                </button>
+            </div>
 
             <main>
                 {isModalOpen && <ModalLogin onClose={() => setIsModalOpen(false)} />}
