@@ -8,7 +8,7 @@ function Register() {
 
     return (
         <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
-            <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-[500px] w-[400px]">
+            <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-[570px] w-[400px]">
                 <p className="text-2xl font-semibold">Criar Conta</p>
                 <input
                     className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
@@ -74,6 +74,15 @@ function Register() {
                     >
                         Criar conta
                     </button>
+
+                    <button onClick={() => navigate('/Login')}
+
+                        className="flex items-center justify-center px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-3px]"
+                        id="voltar-register"
+
+                        >
+                        Voltar
+                        </button> 
             </div>
         </div>
     )
