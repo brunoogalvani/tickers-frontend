@@ -4,12 +4,15 @@ import ModalLogin from '../components/ModalLogin'
 import user from '../assets/img/usuario-de-perfil.png'
 
 
+
 function Login() {
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     return (
         <>
+
+            
             <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
                 
               
@@ -30,14 +33,14 @@ function Login() {
                     />
 
                     <button 
-                        className="flex items-center justify-center px-4 py-2 bg-[#ffffff]/40 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-3px]"
-                        id="entrar"
-                      
+                    className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+                    id="entrar"
+                                        
                     >
                         Entrar
                     </button>
                     <button onClick={() => navigate('/Register')}
-                        className="flex items-center justify-center px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-10px]"
+                        className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
                         id="criar-conta"
                         
                     >
@@ -48,8 +51,8 @@ function Login() {
           
                 <button
                     onClick={() => navigate('/')}
-                    className="mt-8 flex items-center px-6 py-2 bg-white text-black rounded hover:bg-gray-800 hover:text-white transition"
-                >
+                    className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+                    id="voltar-home">
                     Voltar para Home
                 </button>
             </div>

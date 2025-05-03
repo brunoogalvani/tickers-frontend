@@ -1,91 +1,172 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import Swal from 'sweetalert2'
 
+export default function Register() {
+  const navigate = useNavigate()
 
-function Register() {
-    const navigate = useNavigate()
-    const [isModalOpen, setIsModalOpen] = useState(false)
+  const [form, setForm] = useState({
+    nome: '',
+    telefone: '',
+    cpf: '',
+    senha: '',
+    confirmarSenha: '',
+    email: '',
+  })
 
-    return (
-        <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
-            <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-[570px] w-[400px]">
-                <p className="text-2xl font-semibold">Criar Conta</p>
-                <input
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="text"
-                    placeholder="Digite seu e-mail ou Usuário"
-                />
-                <input
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="text"
-                    placeholder="Digite seu nome completo"
-                    onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
-                      }}
+  const [errors, setErrors] = useState({})
 
-                />
-                    <input
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="text"
-                    placeholder="Digite seu telefone"
-                    maxLength={15}
-                    onInput={(e) => {
-                        let value = e.target.value.replace(/\D/g, ''); 
-                        value = value.slice(0, 11); 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+    setErrors((prev) => ({ ...prev, [name]: '' }))
+  }
 
-                        if (value.length >= 1) {
-                        value = '(' + value;
-                        }
-                        if (value.length >= 3) {
-                        value = value.slice(0, 3) + ') ' + value.slice(3);
-                        }
-                        if (value.length >= 10) {
-                        value = value.slice(0, 10) + '-' + value.slice(10);
-                        }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const newErrors = {}
 
-                        e.target.value = value;
-                    }}
-                    />
-                <input
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="text"
-                    placeholder="Digite seu CPF"
-                    maxLength={11}
-                    onInput={(e) => e.target.value = e.target.value.replace(/\D/g, '')}
-                />
+    const telefoneLimpo = form.telefone.replace(/\D/g, '')
+    const cpfLimpo = form.cpf.replace(/\D/g, '')
 
+    if (!form.email || !form.email.includes('@')) newErrors.email = 'Email é inválido'
+    if (form.nome.trim() === '') newErrors.nome = 'Nome é obrigatório'
+    if (telefoneLimpo.length < 11) newErrors.telefone = 'Telefone é incompleto'
+    if (cpfLimpo.length !== 11) newErrors.cpf = 'CPF é inválido'
+    if (form.senha.length < 6) newErrors.senha = 'Senha muito curta'
+    if (form.senha !== form.confirmarSenha) newErrors.confirmarSenha = 'As senhas não coincidem'
 
-                <input
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
 
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="password"
-                    placeholder="Digite sua senha"
-                />
-                <input
-                    className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                    type="password"
-                    placeholder="Confirme sua senha"    
-                />
-                <button
+    console.log('Formulário enviado:', form)
 
-                        className="flex items-center justify-center px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-3px]"
-                        id="criar-conta"
-                        
-                    >
-                        Criar conta
-                    </button>
+    Swal.fire({
+      icon: 'success',
+      title: 'Conta criada!',
+      text: 'Sua conta foi registrada com sucesso!',
+      confirmButtonColor: '#E37C6D',
+    })
+  }
 
-                    <button onClick={() => navigate('/Login')}
+  const formatTelefone = (telefone) => {
+    const cleaned = telefone.replace(/\D/g, '').slice(0, 11)
+    const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/)
+    if (!match) return telefone
+    const [, ddd, parte1, parte2] = match
+    return [ddd && `(${ddd}`, parte1, parte2 && `-${parte2}`].filter(Boolean).join(' ')
+  }
 
-                        className="flex items-center justify-center px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] transform translate-x-[0px] translate-y-[-3px]"
-                        id="voltar-register"
+  const inputClass =
+    'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
-                        >
-                        Voltar
-                        </button> 
-            </div>
-        </div>
-    )
+  const errorClass = 'text-red-400 font-bold text-sm -mt-2 mb-2 pl-1'
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]"
+    >
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center space-y-2 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-auto w-[400px]"
+      >
+        <p className="text-2xl font-semibold mb-2">Criar Conta</p>
+
+        <input
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          className={inputClass}
+          type="email"
+          placeholder="Digite seu e-mail"
+        />
+        {errors.email && <p className={errorClass}>{errors.email}</p>}
+
+        <input
+          name="nome"
+          value={form.nome}
+          onChange={(e) => {
+            const nomeLimpo = e.target.value.replace(/[^a-zA-Z\s]/g, '')
+            setForm((prev) => ({ ...prev, nome: nomeLimpo }))
+            setErrors((prev) => ({ ...prev, nome: '' }))
+          }}
+          className={inputClass}
+          type="text"
+          placeholder="Digite seu nome completo"
+        />
+        {errors.nome && <p className={errorClass}>{errors.nome}</p>}
+
+        <input
+          name="telefone"
+          value={formatTelefone(form.telefone)}
+          onChange={(e) => {
+            const raw = e.target.value.replace(/\D/g, '')
+            setForm((prev) => ({ ...prev, telefone: raw }))
+            setErrors((prev) => ({ ...prev, telefone: '' }))
+          }}
+          className={inputClass}
+          type="text"
+          placeholder="Digite seu telefone"
+          maxLength={15}
+        />
+        {errors.telefone && <p className={errorClass}>{errors.telefone}</p>}
+
+        <input
+          name="cpf"
+          value={form.cpf.replace(/\D/g, '').slice(0, 11)}
+          onChange={(e) => {
+            const raw = e.target.value.replace(/\D/g, '')
+            setForm((prev) => ({ ...prev, cpf: raw }))
+            setErrors((prev) => ({ ...prev, cpf: '' }))
+          }}
+          className={inputClass}
+          type="text"
+          placeholder="Digite seu CPF"
+          maxLength={11}
+        />
+        {errors.cpf && <p className={errorClass}>{errors.cpf}</p>}
+
+        <input
+          name="senha"
+          value={form.senha}
+          onChange={handleChange}
+          className={inputClass}
+          type="password"
+          placeholder="Digite sua senha"
+        />
+        {errors.senha && <p className={errorClass}>{errors.senha}</p>}
+
+        <input
+          name="confirmarSenha"
+          value={form.confirmarSenha}
+          onChange={handleChange}
+          className={inputClass}
+          type="password"
+          placeholder="Confirme sua senha"
+        />
+        {errors.confirmarSenha && <p className={errorClass}>{errors.confirmarSenha}</p>}
+
+        <button
+          type="submit"
+          className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+        >
+          Criar conta
+        </button>
+
+        <button
+          type="button"
+          onClick={() => navigate('/Login')}
+          className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+        >
+          Voltar
+        </button>
+      </form>
+    </motion.div>
+  )
 }
-
-export default Register
