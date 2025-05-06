@@ -1,3 +1,4 @@
+import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -6,43 +7,70 @@ import Swal from 'sweetalert2'
 export default function Register() {
   const navigate = useNavigate()
 
-  const [form, setForm] = useState({
-    nome: '',
-    telefone: '',
-    cpf: '',
-    senha: '',
-    confirmarSenha: '',
-    email: '',
-  })
-
+  const [nome, setNome] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [cep, setCep] = useState('')
+  const [senha, setSenha] = useState('')
+  const [confirmarSenha, setConfirmarSenha] = useState('')
+  const [email, setEmail] = useState('')
   const [errors, setErrors] = useState({})
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-    setErrors((prev) => ({ ...prev, [name]: '' }))
+  async function registrar(){
+    try {
+      const response = await api.post('/users', {
+        nome,
+        telefone,
+        cep,
+        senha,
+        email,
+      })
+      console.log(response.data)
+      Swal.fire({
+        icon: 'success',
+        title: 'Conta criada!',
+        text: 'Sua conta foi registrada com sucesso!',
+        confirmButtonColor: '#E37C6D',
+      })
+    } catch (error) {
+      console.error('Erro ao registrar:', error)
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro ao criar conta',
+        text: 'Verifique os dados e tente novamente.',
+        confirmButtonColor: '#E37C6D',
+      })
+    }
+
   }
+
+  
+
+  
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = {}
 
-    const telefoneLimpo = form.telefone.replace(/\D/g, '')
-    const cpfLimpo = form.cpf.replace(/\D/g, '')
+    const telefoneLimpo = telefone.replace(/\D/g, '')
+    const cepLimpo = cep.replace(/\D/g, '')
 
-    if (!form.email || !form.email.includes('@')) newErrors.email = 'Email é inválido'
-    if (form.nome.trim() === '') newErrors.nome = 'Nome é obrigatório'
+    if (!email || !email.includes('@')) newErrors.email = 'Email é inválido'
+    if (nome.trim() === '') newErrors.nome = 'Nome é obrigatório'
     if (telefoneLimpo.length < 11) newErrors.telefone = 'Telefone é incompleto'
-    if (cpfLimpo.length !== 11) newErrors.cpf = 'CPF é inválido'
-    if (form.senha.length < 6) newErrors.senha = 'Senha muito curta'
-    if (form.senha !== form.confirmarSenha) newErrors.confirmarSenha = 'As senhas não coincidem'
+    if (cepLimpo.length !==9 ) newErrors.cep = 'Cep é inválido'
+    if (senha.length < 6) newErrors.senha = 'Senha muito curta'
+    if (senha !== confirmarSenha) newErrors.confirmarSenha = 'As senhas não coincidem'
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
 
-    console.log('Formulário enviado:', form)
+    registrar()
+
+  
+    
 
     Swal.fire({
       icon: 'success',
@@ -57,8 +85,14 @@ export default function Register() {
     const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/)
     if (!match) return telefone
     const [, ddd, parte1, parte2] = match
-    return [ddd && `(${ddd}`, parte1, parte2 && `-${parte2}`].filter(Boolean).join(' ')
+    const formatted = []
+    if (ddd) formatted.push(`(${ddd})`)
+    if (parte1) {
+      formatted.push(parte2 ? `${parte1}-${parte2}` : parte1)
+    }
+    return formatted.join(' ')
   }
+  
 
   const inputClass =
     'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
@@ -67,9 +101,9 @@ export default function Register() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.6}}
       className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]"
     >
       <form
@@ -80,8 +114,11 @@ export default function Register() {
 
         <input
           name="email"
-          value={form.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value); 
+            setErrors((prev) => ({ ...prev, email: '' }))
+          }}
           className={inputClass}
           type="email"
           placeholder="Digite seu e-mail"
@@ -90,10 +127,10 @@ export default function Register() {
 
         <input
           name="nome"
-          value={form.nome}
+          value={nome}
           onChange={(e) => {
             const nomeLimpo = e.target.value.replace(/[^a-zA-Z\s]/g, '')
-            setForm((prev) => ({ ...prev, nome: nomeLimpo }))
+            setNome(e.target.value) 
             setErrors((prev) => ({ ...prev, nome: '' }))
           }}
           className={inputClass}
@@ -104,38 +141,38 @@ export default function Register() {
 
         <input
           name="telefone"
-          value={formatTelefone(form.telefone)}
+          value={formatTelefone(telefone)}
           onChange={(e) => {
             const raw = e.target.value.replace(/\D/g, '')
-            setForm((prev) => ({ ...prev, telefone: raw }))
+            setTelefone(e.target.value)
             setErrors((prev) => ({ ...prev, telefone: '' }))
           }}
           className={inputClass}
           type="text"
           placeholder="Digite seu telefone"
-          maxLength={15}
+          maxLength={16}
         />
         {errors.telefone && <p className={errorClass}>{errors.telefone}</p>}
 
         <input
-          name="cpf"
-          value={form.cpf.replace(/\D/g, '').slice(0, 11)}
+          name="cep"
+          value={cep.replace(/\D/g, '').slice(0, 8)}
           onChange={(e) => {
             const raw = e.target.value.replace(/\D/g, '')
-            setForm((prev) => ({ ...prev, cpf: raw }))
-            setErrors((prev) => ({ ...prev, cpf: '' }))
+            setCep(e.target.value)
+            setErrors((prev) => ({ ...prev, cep: '' }))
           }}
           className={inputClass}
           type="text"
-          placeholder="Digite seu CPF"
+          placeholder="Digite seu CEP"
           maxLength={11}
         />
-        {errors.cpf && <p className={errorClass}>{errors.cpf}</p>}
+        {errors.cep && <p className={errorClass}>{errors.cep}</p>}
 
         <input
           name="senha"
-          value={form.senha}
-          onChange={handleChange}
+          value={senha}
+          onChange={(e) => {setSenha(e.target.value); setErrors((prev) => ({ ...prev, senha: '' }))}}
           className={inputClass}
           type="password"
           placeholder="Digite sua senha"
@@ -144,8 +181,8 @@ export default function Register() {
 
         <input
           name="confirmarSenha"
-          value={form.confirmarSenha}
-          onChange={handleChange}
+          value={confirmarSenha}
+          onChange={(e) => {setConfirmarSenha(e.target.value); setErrors((prev) => ({ ...prev, confirmarSenha: '' }))}}
           className={inputClass}
           type="password"
           placeholder="Confirme sua senha"
