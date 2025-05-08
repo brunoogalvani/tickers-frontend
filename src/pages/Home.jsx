@@ -30,17 +30,15 @@ function Home() {
           </button>
           <div className='flex'>
             {
-              userID ? null: 
-
-            <button onClick={() => navigate('/login')} className='flex gap-1 items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]'>
-                  <img className='w-[35px] h-[35px]' src={Conta} />
-              <div className='text-start'>
+              userID ? null : 
+              <button onClick={() => navigate('/login')} className='flex gap-1 items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]'>
+                <img className='w-[35px] h-[35px]' src={Conta} />
+                <div className='text-start'>
                   <p className='text-black font-bold'>Entrar</p>
                   <span className='text-white font-bold'>Cadastrar-se</span>
-              </div>
+                </div>
               </button>
             }
-          
           </div>
         </div>
       </header>

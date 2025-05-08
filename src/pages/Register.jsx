@@ -6,7 +6,6 @@ import Swal from 'sweetalert2'
 
 export default function Register() {
   const navigate = useNavigate()
-
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [cep, setCep] = useState('')
@@ -40,13 +39,7 @@ export default function Register() {
         confirmButtonColor: '#E37C6D',
       })
     }
-
   }
-
-  
-
-  
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -69,9 +62,6 @@ export default function Register() {
 
     registrar()
 
-  
-    
-
     Swal.fire({
       icon: 'success',
       title: 'Conta criada!',
@@ -92,8 +82,6 @@ export default function Register() {
     return formatted
   }
 
-
-
   const formatTelefone = (telefone) => {
     const cleaned = telefone.replace(/\D/g, '').slice(0, 11)
     const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/)
@@ -106,7 +94,6 @@ export default function Register() {
     }
     return formatted.join(' ')
   }
-  
 
   const inputClass =
     'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
@@ -143,7 +130,6 @@ export default function Register() {
           name="nome"
           value={nome}
           onChange={(e) => {
-            const nomeLimpo = e.target.value.replace(/[^a-zA-Z\s]/g, '')
             setNome(e.target.value) 
             setErrors((prev) => ({ ...prev, nome: '' }))
           }}
@@ -157,7 +143,6 @@ export default function Register() {
           name="telefone"
           value={formatTelefone(telefone)}
           onChange={(e) => {
-            const raw = e.target.value.replace(/\D/g, '')
             setTelefone(e.target.value)
             setErrors((prev) => ({ ...prev, telefone: '' }))
           }}
@@ -172,7 +157,6 @@ export default function Register() {
           name="cep"
           value={formatCep(cep)}
           onChange={(e) => {
-            const raw = e.target.value.replace(/\D/g, '')
             setCep(e.target.value)
             setErrors((prev) => ({ ...prev, cep: '' }))
           }}
@@ -186,7 +170,10 @@ export default function Register() {
         <input
           name="senha"
           value={senha}
-          onChange={(e) => {setSenha(e.target.value); setErrors((prev) => ({ ...prev, senha: '' }))}}
+          onChange={(e) => {
+            setSenha(e.target.value)
+            setErrors((prev) => ({ ...prev, senha: '' }))
+          }}
           className={inputClass}
           type="password"
           placeholder="Digite sua senha"
@@ -196,7 +183,10 @@ export default function Register() {
         <input
           name="confirmarSenha"
           value={confirmarSenha}
-          onChange={(e) => {setConfirmarSenha(e.target.value); setErrors((prev) => ({ ...prev, confirmarSenha: '' }))}}
+          onChange={(e) => {
+            setConfirmarSenha(e.target.value)
+            setErrors((prev) => ({ ...prev, confirmarSenha: '' }))
+          }}
           className={inputClass}
           type="password"
           placeholder="Confirme sua senha"
