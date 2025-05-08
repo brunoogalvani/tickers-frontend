@@ -2,10 +2,44 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import ModalLogin from '../components/ModalLogin'
 import user from '../assets/img/usuario-de-perfil.png'
+import api from '../services/api'
+import Swal from 'sweetalert2'
 
 
 
 function Login() {
+    const inputClass =
+    'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [errors, setErrors] = useState({})
+    
+
+    async function autenticar() {
+    try {
+        
+        const response = await api.post('/users/login', {
+            email,
+            senha,
+        
+        })
+        
+        sessionStorage.setItem('userID', response.data.id)
+
+        navigate('/')
+    } catch (error) {
+        console.error('Erro ao autenticar:', error)
+              Swal.fire({
+                icon: 'error',
+                title: 'Erro ao entrar na conta',
+                text: 'Verifique os dados e tente novamente.',
+                confirmButtonColor: '#E37C6D',
+              })
+    }
+   
+        
+    }
+
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -21,18 +55,30 @@ function Login() {
             
                     <img className="w-[75px] h-[75px]" src={user} alt="User" />
                     
-                    <input 
-                        className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
-                        type="text"
-                        placeholder="Digite seu e-mail ou Usuário"
-                    />
-                    <input 
-                        className="w-[300px] bg-white/10 backdrop-blur-sm rounded text-white-300 text-[14px] placeholder-white/65 outline-none px-4 py-2"
+                    <input
+                        name="email"
+                        value={email}
+                        onChange={(e) => {
+                            setEmail(e.target.value); 
+                            setErrors((prev) => ({ ...prev, email: '' }))
+                        }}
+                        className={inputClass}
+                        type="email"
+                        placeholder="Digite seu e-mail"
+                        />
+                        {errors.email && <p className={errorClass}>{errors.email}</p>}
+
+                    <input
+                        name="senha"
+                        value={senha}
+                        onChange={(e) => {setSenha(e.target.value); setErrors((prev) => ({ ...prev, senha: '' }))}}
+                        className={inputClass}
                         type="password"
                         placeholder="Digite sua senha"
-                    />
+                         />
 
                     <button 
+                    onClick={autenticar}
                     className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
                     id="entrar"
                                         
