@@ -58,7 +58,7 @@ export default function Register() {
     if (!email || !email.includes('@')) newErrors.email = 'Email é inválido'
     if (nome.trim() === '') newErrors.nome = 'Nome é obrigatório'
     if (telefoneLimpo.length < 11) newErrors.telefone = 'Telefone é incompleto'
-    if (cepLimpo.length !==9 ) newErrors.cep = 'Cep é inválido'
+    if (cepLimpo.length < 8 ) newErrors.cep = 'Cep é inválido'
     if (senha.length < 6) newErrors.senha = 'Senha muito curta'
     if (senha !== confirmarSenha) newErrors.confirmarSenha = 'As senhas não coincidem'
 
@@ -79,6 +79,20 @@ export default function Register() {
       confirmButtonColor: '#E37C6D',
     })
   }
+
+  const formatCep = (cep) => {
+    const cepClean = cep.replace(/\D/g, '').slice(0, 8)
+    const cepMatch = cepClean.match(/^(\d{0,5})(\d{0,3})$/)
+    if (!cepMatch) return cep
+    const [, part1, part2] = cepMatch
+    const formatted = []
+    if (part1){
+      formatted.push(part2 ? `${part1}-${part2}`: part1)
+    }
+    return formatted
+  }
+
+
 
   const formatTelefone = (telefone) => {
     const cleaned = telefone.replace(/\D/g, '').slice(0, 11)
@@ -156,7 +170,7 @@ export default function Register() {
 
         <input
           name="cep"
-          value={cep.replace(/\D/g, '').slice(0, 8)}
+          value={formatCep(cep)}
           onChange={(e) => {
             const raw = e.target.value.replace(/\D/g, '')
             setCep(e.target.value)
