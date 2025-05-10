@@ -1,12 +1,27 @@
 import TickersLogo from '../assets/img/tickers.png'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal.jsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import api from '../services/api.js'
 
 function Home() {
   const userID = sessionStorage.getItem('userID')
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [eventos, setEventos] = useState([])
+
+  useEffect(() => {
+    getEventos()
+  }, [eventos]);
+
+  async function getEventos() {
+    try {
+      const response = await api.get('/eventos')
+      setEventos(response.data)
+    } catch (error) {
+      console.error("Erro ao retornar os eventos", error)
+    }
+  }
 
   return (
     <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
@@ -50,7 +65,27 @@ function Home() {
         </div>
       </header>
 
-      <main></main>
+      <main>
+        <div className='flex flex-wrap justify-start'>
+          {eventos.length!==0 ? (
+            eventos.map((evento) => (
+              <div key={evento.id} className='w-[360px] h-[250px] m-3 bg-[#9C554D]/40 rounded-lg cursor-pointer'>
+                <div className='relative'>
+                  <img src={evento.imagemCapa} className='rounded-lg rounded-b-none w-[360px] h-[160px]' />
+                  <h1 className='absolute top-2 left-2 bg-white/80 text-black font-bold text-xs px-2 py-1 rounded'>{evento.categoria}</h1>
+                </div>
+
+                <div className='flex flex-col justify-evenly h-[90px] ml-3'>
+                  <h1 className='text-zinc-200 text-[14px]'>{evento.dataInicio}</h1>
+                  <h1 className='w-[330px] font-bold truncate'>{evento.titulo}</h1>
+                  <h1>{evento.local.nome}, {evento.local.cidade}</h1>
+                </div>
+
+              </div>
+            ))
+          ) : null}
+        </div>
+      </main>
 
       {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
     </div>
