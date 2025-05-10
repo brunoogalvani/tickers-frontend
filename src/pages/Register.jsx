@@ -88,11 +88,10 @@ export default function Register() {
     if (!match) return telefone
     const [, ddd, parte1, parte2] = match
     const formatted = []
-    if (ddd) formatted.push(`(${ddd})`)
-    if (parte1) {
-      formatted.push(parte2 ? `${parte1}-${parte2}` : parte1)
-    }
-    return formatted.join(' ')
+    if (parte2) return `(${ddd}) ${parte1}-${parte2}`
+    if (parte1) return `(${ddd}) ${parte1}`
+    if (ddd) return `(${ddd}`
+    return ''
   }
 
   const inputClass =
