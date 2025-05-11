@@ -201,7 +201,7 @@ export default function Register() {
 
         <button
           type="button"
-          onClick={() => navigate('/Login')}
+          onClick={() => navigate('/login')}
           className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
         >
           Voltar
