@@ -35,9 +35,9 @@ function Login() {
 
     return (
         <>
-            <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
+            <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]">
         
-                <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-[450px] w-[400px]">
+                <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-[450px] w-[400px]">
                     <p className="text-2xl font-semibold">Login</p>
             
                     <svg className="w-[75px] h-[75px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

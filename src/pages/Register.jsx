@@ -23,13 +23,16 @@ export default function Register() {
         senha,
         email,
       })
-      console.log(response.data)
+      
       Swal.fire({
         icon: 'success',
         title: 'Conta criada!',
         text: 'Sua conta foi registrada com sucesso!',
         confirmButtonColor: '#E37C6D',
+      }).then(() => {
+        autenticar() 
       })
+  
     } catch (error) {
       console.error('Erro ao registrar:', error)
       Swal.fire({
@@ -40,7 +43,23 @@ export default function Register() {
       })
     }
   }
+  
 
+  async function autenticar() {
+    try {
+        const response = await api.post('/users/login', {
+            email,
+            senha,
+        })
+        
+        sessionStorage.setItem('userID', response.data.id)
+        navigate('/')
+    }
+    catch (error) {
+        console.error('Erro ao autenticar:', error)
+        
+        }
+    }
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = {}
@@ -62,12 +81,7 @@ export default function Register() {
 
     registrar()
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Conta criada!',
-      text: 'Sua conta foi registrada com sucesso!',
-      confirmButtonColor: '#E37C6D',
-    })
+    
   }
 
   const formatCep = (cep) => {
@@ -104,11 +118,11 @@ export default function Register() {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6}}
-      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]"
+      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]"
     >
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-2 border-2 border-none p-6 bg-gray-800/30 rounded-lg shadow-lg h-auto w-[400px]"
+        className="flex flex-col items-center space-y-2 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-auto w-[400px]"
       >
         <p className="text-2xl font-semibold mb-2">Criar Conta</p>
 
@@ -193,6 +207,8 @@ export default function Register() {
         {errors.confirmarSenha && <p className={errorClass}>{errors.confirmarSenha}</p>}
 
         <button
+          onClick={(autenticar)}
+          
           type="submit"
           className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
         >

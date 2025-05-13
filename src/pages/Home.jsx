@@ -64,21 +64,22 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#F5D87F,_#E37C6D)]">
-      <header className='flex justify-between   items-center text-white p-4 h-[80px] bg-[#9C554D]/50'>
+    <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]">
+      <header className='flex justify-between items-center text-white p-4 h-[80px] bg-gray-500/70 rounded-b-2xl shadow-lg shadow-black/30'>
+
         <div className='flex justify-between items-center w-[700px]'>
           <img className='h-[50px]' src={TickersLogo} />
-          <div className='h-[35px] flex items-center gap-2 border border-[#aa692d] rounded-[15px] p-2 bg-gray-800/30'>
-            <svg className="h-[20px] text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <div className='h-[35px] flex items-center gap-2 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
+            <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
             </svg>
 
             <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" />
           </div>
-            <button className='flex text-black'>
+            <button className='flex text-white'>
               Filtrar
-              <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
+              <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               </svg>
             </button>
         </div>
@@ -90,7 +91,7 @@ function Home() {
             </svg>
 
             <div>
-              <p className='text-black font-bold'>Seu Local</p>
+              <p className='text-gray-300 font-bold'>Seu Local</p>
             </div>
           </button>
           <div className='flex'>
@@ -124,8 +125,8 @@ function Home() {
                   </svg>
 
                   <div className='text-start'>
-                    <p className='text-black font-bold'>Entrar</p>
-                    <span className='text-white font-bold'>Cadastrar-se</span>
+                    <p className='text-gray-300 font-bold'>Entrar</p>
+                    <span className='text-black font-bold'>Cadastrar-se</span>
                   </div>
                 </button>
               )
@@ -135,15 +136,15 @@ function Home() {
       </header>
 
       <main>
-        <div className='flex flex-wrap justify-start'>
+        <div className="p-4 grid gap-4 justify-center" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}>
           {eventos.length!==0 ? (
             eventos.map((evento) => (
-              <div key={evento.id} className='w-[360px] h-[250px] m-3 bg-[#9C554D]/40 rounded-lg cursor-pointer hover:scale-[103%] duration-150'>
+              <div key={evento.id} className='w-[360px] h-[250px] bg-gray-400/30 rounded-lg cursor-pointer hover:scale-[103%] duration-150'>
                 <div className='relative'>
                   <img src={evento.imagemCapa} className='rounded-lg rounded-b-none w-[360px] h-[160px]' />
                   <h1 className='absolute top-2 left-2 bg-white/80 text-black font-bold text-xs px-2 py-1 rounded'>{evento.categoria}</h1>
                 </div>
-
+              
                 <div className='flex flex-col justify-evenly h-[90px] ml-3'>
                   <h1 className='text-zinc-200 text-[14px]'>{evento.dataInicio}</h1>
                   <h1 className='w-[330px] font-bold truncate'>{evento.titulo}</h1>
