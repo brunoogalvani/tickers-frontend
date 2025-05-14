@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal.jsx'
 import { useEffect, useRef, useState } from 'react'
 import api from '../services/api.js'
+import Carousel from '../components/Carousel.jsx'
 
 function Home() {
+  const [images, setImages] = useState([])
   const userID = sessionStorage.getItem('userID')
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [eventos, setEventos] = useState([])
+  const imagensCapa = eventos.map((evento) => evento.imagemCapa)
   const [username, setUsername] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownContainerRef = useRef()
@@ -78,8 +81,8 @@ function Home() {
           </div>
             <button className='flex text-white'>
               Filtrar
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
               <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
               </svg>
             </button>
         </div>
@@ -134,6 +137,8 @@ function Home() {
           </div>
         </div>
       </header>
+      
+        {imagensCapa.length > 0 && <Carousel imagens={imagensCapa} />}
 
       <main>
         <div className="p-4 grid gap-4 justify-center" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}>
@@ -144,7 +149,7 @@ function Home() {
                   <img src={evento.imagemCapa} className='rounded-lg rounded-b-none w-[360px] h-[160px]' />
                   <h1 className='absolute top-2 left-2 bg-white/80 text-black font-bold text-xs px-2 py-1 rounded'>{evento.categoria}</h1>
                 </div>
-              
+
                 <div className='flex flex-col justify-evenly h-[90px] ml-3'>
                   <h1 className='text-zinc-200 text-[14px]'>{evento.dataInicio}</h1>
                   <h1 className='w-[330px] font-bold truncate'>{evento.titulo}</h1>
