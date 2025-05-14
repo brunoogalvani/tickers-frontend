@@ -16,6 +16,18 @@ function Home() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownContainerRef = useRef()
   const dropdownRef = useRef()
+  const [isDropdownLocalOpen, setIsDropdownLocalOpen] = useState(false)
+  const dropdownLocalContainerRef = useRef()
+  const dropdownLocalRef = useRef()
+  const [busca, setBusca] = useState('')
+  const [eventosFiltrados, setEventosFiltrados] = useState([])
+  const [isRotated, setIsRotated] = useState(false)
+  const [localizacao, setLocalizacao] = useState([])
+
+  useEffect(() => {
+    const filtrados = eventos.filter(evento => evento.titulo.toLowerCase().includes(busca))
+    setEventosFiltrados(filtrados)
+  }, [busca, eventos]);
 
   useEffect(() => {
     getEventos()
@@ -30,12 +42,33 @@ function Home() {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target) && !dropdownContainerRef.current.contains(e.target)) {
         setIsDropdownOpen(false)
       }
+
+      if (dropdownLocalRef.current && !dropdownLocalRef.current.contains(e.target) && !dropdownLocalContainerRef.current.contains(e.target)) {
+        setIsDropdownLocalOpen(false)
+      }
     }
 
     document.addEventListener('mousedown', handleOutClick)
     
     return () => {
       document.removeEventListener('mousedown', handleOutClick)
+    }
+  }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+    
+          await getCidade(latitude, longitude)
+          console.log(localizacao)
+        },
+        (error) => {
+          console.error("Erro ao obter localização:", error)
+        }
+      )
     }
   }, []);
 
@@ -61,9 +94,26 @@ function Home() {
     setIsDropdownOpen(!isDropdownOpen)
   }
 
+  function toggleDropdownLocal() {
+    setIsDropdownLocalOpen(!isDropdownLocalOpen)
+  }
+
   function logout() {
     navigate('/')
     sessionStorage.setItem('userID', '')
+  }
+
+  async function getCidade(lat, lon) {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
+      const data = await response.json()
+
+      setLocalizacao({bairro: data.address.suburb, cidade: data.address.city, estado: data.address.state, cep: data.address.postcode})
+    } catch (error) {
+      console.error("Erro ao buscar cidade", error)
+      return "Erro ao obter cidade"
+    }
+
   }
 
   return (
@@ -77,26 +127,43 @@ function Home() {
               <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
             </svg>
 
-            <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" />
+            <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
           </div>
-            <button className='flex text-white'>
+            <button className='flex text-white' onClick={() => setIsRotated(!isRotated)}>
               Filtrar
-              <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <svg className={`w-6 h-6 text-white transition ${isRotated ? 'rotate-180' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
               </svg>
             </button>
         </div>
         <div className='flex justify-evenly items-center w-[600px]'>
-          <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' id='local' onClick={() => setIsModalOpen(true)}>
-            <svg className="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-            </svg>
+          <div className='relative' ref={dropdownLocalContainerRef}>
+            <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' id='local' onClick={toggleDropdownLocal}>
+              <svg className="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
+              </svg>
 
-            <div>
               <p className='text-gray-300 font-bold'>Seu Local</p>
-            </div>
-          </button>
+            </button>
+
+            { 
+              isDropdownLocalOpen ? (
+                <div className='absolute bg-gray-600 flex flex-col -inset-x-1/2 items-center z-50 rounded-xl w-[200%]' ref={dropdownLocalRef}>
+                  <div className='flex flex-col p-4'>
+                    <h1 className='mb-4'>Você está em: <span className='font-bold'>{localizacao.cidade}</span></h1>
+                    <select name="" id="" defaultValue='Bairro' className='w-full mb-2'>
+                      <option value="">Estado</option>
+                    </select>
+                    <select name="" id="" defaultValue='Cidade' className='w-full'>
+                      <option value="">Cidade</option>
+                    </select>
+                  </div>
+                  
+                </div>
+              ) : null
+            }
+          </div>
           <div className='flex'>
             {
               userID ? (
@@ -114,8 +181,8 @@ function Home() {
 
                   {
                     isDropdownOpen ? (
-                      <div className='absolute bg-[#9C554D] flex flex-col inset-x-0 items-start z-50 rounded-xl' ref={dropdownRef}>
-                        <button onClick={() => navigate('/')} className='hover:bg-black/20 w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
+                      <div className='absolute bg-gray-600 flex flex-col inset-x-0 items-start z-50 rounded-xl' ref={dropdownRef}>
+                        <button onClick={() => navigate('/')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
                         <button onClick={logout} className='hover:bg-black/20 w-full px-4 py-3 text-left rounded-b-xl'>Sair</button>
                       </div>
                     ) : null
@@ -142,8 +209,8 @@ function Home() {
 
       <main>
         <div className="p-4 grid gap-4 justify-center" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}>
-          {eventos.length!==0 ? (
-            eventos.map((evento) => (
+          {eventosFiltrados.length!==0 ? (
+            eventosFiltrados.map((evento) => (
               <div key={evento.id} className='w-[360px] h-[250px] bg-gray-400/30 rounded-lg cursor-pointer hover:scale-[103%] duration-150'>
                 <div className='relative'>
                   <img src={evento.imagemCapa} className='rounded-lg rounded-b-none w-[360px] h-[160px]' />
