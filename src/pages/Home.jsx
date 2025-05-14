@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal.jsx'
 import { useEffect, useRef, useState } from 'react'
 import api from '../services/api.js'
+import { map } from 'leaflet'
 
 function Home() {
   const userID = sessionStorage.getItem('userID')
@@ -13,6 +14,13 @@ function Home() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownContainerRef = useRef()
   const dropdownRef = useRef()
+  const [busca, setBusca] = useState('')
+  const [eventosFiltrados, setEventosFiltrados] = useState([])
+
+  useEffect(() => {
+    const filtrados = eventos.filter(evento => evento.titulo.toLowerCase().includes(busca))
+    setEventosFiltrados(filtrados)
+  }, [busca, eventos]);
 
   useEffect(() => {
     getEventos()
@@ -74,12 +82,12 @@ function Home() {
               <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
             </svg>
 
-            <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" />
+            <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
           </div>
             <button className='flex text-white'>
               Filtrar
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
               <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
               </svg>
             </button>
         </div>
@@ -137,8 +145,8 @@ function Home() {
 
       <main>
         <div className="p-4 grid gap-4 justify-center" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}>
-          {eventos.length!==0 ? (
-            eventos.map((evento) => (
+          {eventosFiltrados.length!==0 ? (
+            eventosFiltrados.map((evento) => (
               <div key={evento.id} className='w-[360px] h-[250px] bg-gray-400/30 rounded-lg cursor-pointer hover:scale-[103%] duration-150'>
                 <div className='relative'>
                   <img src={evento.imagemCapa} className='rounded-lg rounded-b-none w-[360px] h-[160px]' />
