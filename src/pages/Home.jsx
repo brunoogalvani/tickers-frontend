@@ -4,10 +4,24 @@
   import { useEffect, useRef, useState } from 'react'
   import api from '../services/api.js'
   import Carousel from '../components/Carousel.jsx'
-
+  import ModalEventos from '../components/ModalEventos.jsx'
  
 
   function Home() {
+     const [modalOpen, setModalOpen] = useState(false);
+      const [eventoSelecionado, setEventoSelecionado] = useState(null);
+
+      const abrirModal = (evento) => {
+        setEventoSelecionado(evento);
+        setModalOpen(true);
+      };
+
+      const fecharModal = () => {
+        setModalOpen(false);
+        setEventoSelecionado(null);
+      };
+
+
     const [images, setImages] = useState([])
     const userID = sessionStorage.getItem('userID')
     const navigate = useNavigate()
@@ -329,7 +343,7 @@
       style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}
     >
       {eventosEstado.map(evento => (
-        <div key={evento.id} className="w-[360px] h-[250px] bg-gray-400/30 rounded-lg cursor-pointer hover:scale-[103%] duration-150">
+        <div key={evento.id}  onClick={() => abrirModal(evento)} style={{cursor: 'pointer'}} className="w-[360px] h-[250px] bg-gray-400/30 rounded-lg cursor-pointer hover:scale-[103%] duration-150">
           <div className="relative">
             <img src={evento.imagemCapa} className="rounded-lg rounded-b-none w-[360px] h-[160px]" />
             <h1 className="absolute top-2 left-2 bg-white/80 text-black font-bold text-xs px-2 py-1 rounded">{evento.categoria}</h1>
@@ -347,7 +361,11 @@
           ))}
         </div>
       </main>
-
+          <ModalEventos
+        isOpen={modalOpen}
+        onClose={fecharModal}
+        evento={eventoSelecionado}
+      />
       {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
     </div>
   )
