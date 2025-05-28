@@ -35,7 +35,8 @@ function Login() {
 
     return (
         <>
-            <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]">
+
+            <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
         
                 <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-[450px] w-[400px]">
                     <p className="text-2xl font-semibold">Login</p>

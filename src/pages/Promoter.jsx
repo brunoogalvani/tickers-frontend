@@ -104,7 +104,7 @@ export default function RegisterEvent() {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]"
+      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]"
     >
       <form
         onSubmit={handleSubmit}
@@ -130,7 +130,9 @@ export default function RegisterEvent() {
           <input className={inputClass} type="number" placeholder="Preço (R$)" value={preco} onChange={(e) => setPreco(e.target.value)} />
 
           <input className={inputClass} type="file" accept="image/*" onChange={(e) => setImagemCapa(e.target.files[0])} />
+
         </div>
+
 
         <div className="flex gap-4 mt-6">
           <button type="submit" className="px-6 py-2 bg-yellow-400 text-black rounded-xl hover:bg-yellow-500 transition">
