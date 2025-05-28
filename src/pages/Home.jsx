@@ -190,6 +190,7 @@
       }
     }
 
+<<<<<<< HEAD
     return (
       <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#183B4E,_#27548A)]">
         <header className='flex justify-between items-center text-white p-4 h-[80px] bg-gray-500/70 rounded-b-2xl shadow-lg shadow-black/30'>
@@ -199,6 +200,30 @@
             <div className='h-[35px] flex items-center gap-2 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
               <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+=======
+                    <select name="categoria" className='w-full mb-4 text-black' defaultValue='' onChange={(e) => setCategoriaSelecionada(e.target.value)}>
+                      <option value="" disabled hidden>Categoria</option>
+                      <option value="">Todas as Categorias</option>
+                      {categorias.map((categoria, index) => (
+                        <option key={index} value={categoria}>{categoria}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ) : null
+            }
+          </div>
+        </div>
+        <div className='flex justify-evenly items-center w-[600px]'>
+          <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' onClick={() => navigate('/promoter')}>
+            <p className='text-gray-300 font-bold'>Criar Evento</p>
+          </button>
+          <div className='relative' ref={dropdownLocalContainerRef}>
+            <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' id='local' onClick={toggleDropdownLocal}>
+              <svg className="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
+>>>>>>> 51184c6 (add promoter)
               </svg>
 
               <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
