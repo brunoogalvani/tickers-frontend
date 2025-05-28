@@ -8,12 +8,12 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
       <div style={styles.modal}>
         <button style={styles.closeBtn} onClick={onClose}>×</button>
 
-        {/* Container flex para imagem + detalhes */}
+      
         <div style={styles.contentWrapper}>
-          {/* Imagem à esquerda */}
-          {evento.imagemUrl ? (
+         
+          {evento.imagemCapa ? (
             <div style={styles.imageContainer}>
-              <img src={evento.imagemUrl} alt={evento.titulo} style={styles.image} />
+            <img src={evento.imagemCapa} className="rounded-lg rounded-b-none w-[360px] h-[160px]" />
             </div>
           ) : (
             <div style={styles.imagePlaceholder}>Sem imagem</div>
