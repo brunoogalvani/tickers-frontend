@@ -9,7 +9,7 @@ export default function Carousel({ imagens = [] }) {
     loop: true,
     mode: "snap",
     slides: {
-      perView: 1.2, 
+      perView: 1.3, 
       spacing: 10,  
       origin: "center",
     },

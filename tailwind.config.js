@@ -6,6 +6,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
+                poppin: ['Poppins', 'sans-serif'],
                 roboto: ['Roboto', 'sans-serif'],
                 openSans: ['Open Sans', 'sans-serif'],
             },
