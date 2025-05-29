@@ -5,7 +5,6 @@
   import api from '../services/api.js'
   import Carousel from '../components/Carousel.jsx'
   import ModalEventos from '../components/ModalEventos.jsx'
-  import PaginaUsuario from './PaginaUsuario.jsx'
  
 
   function Home() {
@@ -301,7 +300,7 @@
             {
               isDropdownOpen ? (
                 <div className='absolute bg-gray-600 flex flex-col inset-x-0 items-start z-50 rounded-xl' ref={dropdownRef}>
-                  <button onClick={() => navigate('/PaginaUsuario')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
+                  <button onClick={() => navigate('/pagina-usuario')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
                   <button onClick={logout} className='hover:bg-black/20 w-full px-4 py-3 text-left rounded-b-xl'>Sair</button>
                 </div>
               ) : null
