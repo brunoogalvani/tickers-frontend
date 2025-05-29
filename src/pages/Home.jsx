@@ -1,6 +1,6 @@
   import TickersLogo from '../assets/img/tickers.png'
   import { useNavigate } from 'react-router-dom'
-  import Modal from '../components/modal.jsx'
+  import Modal from '../components/Modal.jsx'
   import { useEffect, useRef, useState } from 'react'
   import api from '../services/api.js'
   import Carousel from '../components/Carousel.jsx'
