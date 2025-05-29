@@ -182,7 +182,7 @@
 
     async function getCidade(lat, lon) {
       try {
-        const response = await fetch(`https://nominatim.openst  reetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
         const data = await response.json()
 
         setLocalizacao({bairro: data.address.suburb, cidade: data.address.city, estado: data.address.state, cep: data.address.postcode})
