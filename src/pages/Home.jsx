@@ -35,9 +35,6 @@
     const [isDropdownLocalOpen, setIsDropdownLocalOpen] = useState(false)
     const dropdownLocalContainerRef = useRef()
     const dropdownLocalRef = useRef()
-    const [isDropdownFiltroOpen, setIsDropdownFiltroOpen] = useState(false)
-    const dropdownFiltroContainerRef = useRef()
-    const dropdownFiltroRef = useRef()
     const [busca, setBusca] = useState('')
     const [eventosFiltrados, setEventosFiltrados] = useState([])
     const [isRotated, setIsRotated] = useState(false)
@@ -112,11 +109,6 @@
         if (dropdownLocalRef.current && !dropdownLocalRef.current.contains(e.target) && !dropdownLocalContainerRef.current.contains(e.target)) {
           setIsDropdownLocalOpen(false)
         }
-
-        if (dropdownFiltroRef.current && !dropdownFiltroRef.current.contains(e.target) && !dropdownFiltroContainerRef.current.contains(e.target)) {
-          setIsDropdownFiltroOpen(false)
-          setIsRotated(false)
-        }
       }
 
       document.addEventListener('mousedown', handleOutClick)
@@ -169,11 +161,6 @@
       setIsDropdownLocalOpen(!isDropdownLocalOpen)
     }
 
-    function toggleDropdownFiltro() {
-      setIsRotated(!isRotated)
-      setIsDropdownFiltroOpen(!isDropdownFiltroOpen)
-    }
-
     function logout() {
       navigate('/')
       sessionStorage.setItem('userID', '')
@@ -195,7 +182,7 @@
     return (
 <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
 <header className='flex justify-between items-center text-white p-4 h-[80px] bg-gray-500/70  shadow-lg shadow-black/30'>
-  <div className='flex justify-between items-center w-[800px]'>
+  <div className='flex justify-between items-center w-[700px]'>
     <img className='h-[50px]' src={TickersLogo} />
     <div className='h-[35px] flex items-center gap-2 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
       <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -203,29 +190,33 @@
       </svg>
       <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
     </div>
-    <div className='relative' ref={dropdownFiltroContainerRef}>
-      <button className='flex text-white' onClick={toggleDropdownFiltro}>
-        Filtrar categoria
-        <svg className={`w-6 h-6 text-white transition ${isRotated ? 'rotate-180' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
-        </svg>
-      </button>
-      {
-        isDropdownFiltroOpen ? (
-          <div className='absolute bg-gray-600 flex flex-col -inset-x-1/2 z-50 rounded-xl' ref={dropdownFiltroRef}>
-            <div className='flex flex-col p-4'>
-              <h1 className='mb-4'>Selecione a categoria que deseja:</h1>
-              <select name="categoria" className='w-full mb-4 text-black' defaultValue='' onChange={(e) => setCategoriaSelecionada(e.target.value)}>
-                <option value="" disabled hidden>Categoria</option>
-                <option value="">Todas as Categorias</option>
-                {categorias.map((categoria, index) => (
-                  <option key={index} value={categoria}>{categoria}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        ) : null
-      }
+    <div className="relative w-64 group">
+      <div className="relative">
+        <select
+          name="categoria"
+          className="cursor-pointer block appearance-none w-full bg-gray-600 text-white py-3 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+          defaultValue=""
+          onChange={(e) => {
+            setCategoriaSelecionada(e.target.value);
+            // Aguarda o menu fechar para reverter a rotação
+            setTimeout(() => setIsRotated(false), 150);
+          }}
+          onFocus={() => setIsRotated(true)}
+          onBlur={() => setIsRotated(false)}
+        >
+          <option value="">Categorias</option>
+          {categorias.map((categoria, index) => (
+            <option key={index} value={categoria}>{categoria}</option>
+          ))}
+        </select>
+
+        {/* Ícone da seta */}
+        <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 transition-transform duration-300 ${isRotated ? 'rotate-180' : ''}`}>
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
   <div className='flex justify-evenly items-center w-[600px]'>

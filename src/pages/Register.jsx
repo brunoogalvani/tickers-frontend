@@ -14,6 +14,8 @@ export default function Register() {
   const [email, setEmail] = useState('')
   const [errors, setErrors] = useState({})
 
+
+
   async function registrar(){
     try {
       const response = await api.post('/users', {
@@ -113,6 +115,13 @@ export default function Register() {
 
   const errorClass = 'text-red-400 font-bold text-sm -mt-2 mb-2 pl-1'
 
+
+  function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+          handleSubmit();
+      }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -121,6 +130,7 @@ export default function Register() {
       className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]"
     >
       <form
+        onKeyDown={handleKeyPress}
         onSubmit={handleSubmit}
         className="flex flex-col items-center space-y-2 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-auto w-[400px]"
       >
@@ -207,7 +217,7 @@ export default function Register() {
         {errors.confirmarSenha && <p className={errorClass}>{errors.confirmarSenha}</p>}
 
         <button
-          onClick={(autenticar)}
+        
           
           type="submit"
           className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
