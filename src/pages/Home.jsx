@@ -142,7 +142,6 @@
           ...evento,
           imagemCapa: BASE_IMAGEM_URL + evento.imagemCapa
         }))
-        console.log(eventosComImagens)
         setEventos(eventosComImagens)
       } catch (error) {
         console.error("Erro ao retornar os eventos", error)
