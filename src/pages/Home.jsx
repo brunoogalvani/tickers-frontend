@@ -41,6 +41,7 @@
     const [localizacao, setLocalizacao] = useState([])
     const [categorias, setCategorias] = useState([])
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('')
+    const BASE_IMAGEM_URL = process.env.API_URL + 'uploads/' || "http://localhost:8080/uploads/"
 
     const nomesEstados = {
         "AC": "no Acre",
@@ -137,7 +138,12 @@
     async function getEventos() {
       try {
         const response = await api.get('/eventos')
-        setEventos(response.data)
+        const eventosComImagens = response.data.map(evento => ({
+          ...evento,
+          imagemCapa: BASE_IMAGEM_URL + evento.imagemCapa
+        }))
+        console.log(eventosComImagens)
+        setEventos(eventosComImagens)
       } catch (error) {
         console.error("Erro ao retornar os eventos", error)
       }
