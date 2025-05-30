@@ -41,7 +41,7 @@
     const [localizacao, setLocalizacao] = useState([])
     const [categorias, setCategorias] = useState([])
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('')
-    const BASE_IMAGEM_URL = "https://tickers-backend.vercel.app/uploads/"
+    const BASE_IMAGEM_URL = process.env.VITE_API_URL + 'uploads/' || "http://localhost:8080/uploads/"
 
     const nomesEstados = {
         "AC": "no Acre",
