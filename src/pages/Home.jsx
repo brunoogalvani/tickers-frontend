@@ -21,8 +21,7 @@
         setEventoSelecionado(null);
       };
 
-    const [useRole, getUserRole] = useState('')
-    const [images, setImages] = useState([])
+    const [userRole, getUserRole] = useState('')
     const userID = sessionStorage.getItem('userID')
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -41,7 +40,6 @@
     const [localizacao, setLocalizacao] = useState([])
     const [categorias, setCategorias] = useState([])
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('')
-    const BASE_IMAGEM_URL = "https://tickers-backend.vercel.app/uploads/"
 
     const nomesEstados = {
         "AC": "no Acre",
@@ -138,11 +136,7 @@
     async function getEventos() {
       try {
         const response = await api.get('/eventos')
-        const eventosComImagens = response.data.map(evento => ({
-          ...evento,
-          imagemCapa: BASE_IMAGEM_URL + evento.imagemCapa
-        }))
-        setEventos(eventosComImagens)
+        setEventos(response.data)
       } catch (error) {
         console.error("Erro ao retornar os eventos", error)
       }
