@@ -21,6 +21,7 @@ function Login() {
             })
             
             sessionStorage.setItem('userID', response.data.id)
+            sessionStorage.setItem('userRole', response.data.role)
             Swal.fire({
                 icon: 'success',
                 title: 'Login efetuado!',
@@ -97,7 +98,8 @@ function Login() {
                         >
                             Entrar
                         </button>
-                        <button 
+                        <button
+                            type='button' 
                             onClick={() => navigate('/register')}
                             className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
                             id="criar-conta"  

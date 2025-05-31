@@ -182,7 +182,7 @@ export default function PaginaUsuario() {
                   Salvar
                 </button>
                 <button
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => {setIsEditing(false); setPassword('')}}
                   className="bg-gray-600 hover:bg-gray-700 transition px-5 py-2 rounded-xl text-white"
                 >
                   Cancelar

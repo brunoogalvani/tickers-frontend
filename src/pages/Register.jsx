@@ -18,7 +18,7 @@ export default function Register() {
 
   async function registrar(){
     try {
-      const response = await api.post('/users', {
+      await api.post('/users', {
         nome,
         telefone,
         cep,
@@ -55,6 +55,7 @@ export default function Register() {
         })
         
         sessionStorage.setItem('userID', response.data.id)
+        sessionStorage.setItem('userRole', response.data.role)
         navigate('/')
     }
     catch (error) {

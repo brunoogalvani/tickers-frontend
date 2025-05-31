@@ -21,7 +21,7 @@
         setEventoSelecionado(null);
       };
 
-    const [userRole, getUserRole] = useState('')
+    const userRole = sessionStorage.getItem('userRole')
     const userID = sessionStorage.getItem('userID')
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -42,43 +42,43 @@
     const [categoriaSelecionada, setCategoriaSelecionada] = useState('')
 
     const nomesEstados = {
-        "AC": "no Acre",
-        "AL": "em Alagoas",
-        "AP": "no Amapá",
-        "AM": "no Amazonas",
-        "BA": "na Bahia",
-        "CE": "no Ceará",
-        "DF": "no Distrito Federal",
-        "ES": "em Espírito Santo",
-        "GO": "em Goiás",
-        "MA": "no Maranhão",
-        "MT": "no Mato Grosso",
-        "MS": "no Mato Grosso do Sul",
-        "MG": "em Minas Gerais",
-        "PA": "no Pará",
-        "PB": "em Paraíba",
-        "PR": "no Paraná",
-        "PE": "em Pernambuco",
-        "PI": "no Piauí",
-        "RJ": "no Rio de Janeiro",
-        "RN": "no Rio Grande do Norte",
-        "RS": "no Rio Grande do Sul",
-        "RO": "em Rondônia",
-        "RR": "em Roraima",
-        "SC": "em Santa Catarina",
-        "SP": "em São Paulo",
-        "SE": "em Sergipe",
-        "TO": "em Tocantins"
-      };
+      "AC": "no Acre",
+      "AL": "em Alagoas",
+      "AP": "no Amapá",
+      "AM": "no Amazonas",
+      "BA": "na Bahia",
+      "CE": "no Ceará",
+      "DF": "no Distrito Federal",
+      "ES": "em Espírito Santo",
+      "GO": "em Goiás",
+      "MA": "no Maranhão",
+      "MT": "no Mato Grosso",
+      "MS": "no Mato Grosso do Sul",
+      "MG": "em Minas Gerais",
+      "PA": "no Pará",
+      "PB": "em Paraíba",
+      "PR": "no Paraná",
+      "PE": "em Pernambuco",
+      "PI": "no Piauí",
+      "RJ": "no Rio de Janeiro",
+      "RN": "no Rio Grande do Norte",
+      "RS": "no Rio Grande do Sul",
+      "RO": "em Rondônia",
+      "RR": "em Roraima",
+      "SC": "em Santa Catarina",
+      "SP": "em São Paulo",
+      "SE": "em Sergipe",
+      "TO": "em Tocantins"
+    };
 
 
 
-          const eventosAgrupadosPorEstado = eventosFiltrados.reduce((acc, evento) => {
-            const estado = evento.local.estado;  
-            if (!acc[estado]) acc[estado] = [];
-            acc[estado].push(evento);
-            return acc;
-          }, {});
+    const eventosAgrupadosPorEstado = eventosFiltrados.reduce((acc, evento) => {
+      const estado = evento.local.estado;  
+      if (!acc[estado]) acc[estado] = [];
+      acc[estado].push(evento);
+      return acc;
+    }, {});
 
 
     useEffect(() => {
@@ -163,6 +163,7 @@
     function logout() {
       navigate('/')
       sessionStorage.setItem('userID', '')
+      sessionStorage.setItem('userRole', '')
     }
 
     async function getCidade(lat, lon) {
@@ -181,7 +182,7 @@
     return (
 <div className="min-h-screen text-white bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
 <header className='flex justify-between items-center text-white p-4 h-[80px] bg-gray-500/70  shadow-lg shadow-black/30'>
-  <div className='flex justify-between items-center w-[700px]'>
+  <div className='flex justify-between items-center w-[750px]'>
     <img className='h-[50px]' src={TickersLogo} />
     <div className='h-[35px] flex items-center gap-2 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
       <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -189,11 +190,11 @@
       </svg>
       <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
     </div>
-    <div className="relative w-64 group">
+    <div className="relative w-[150px] group">
       <div className="relative">
         <select
           name="categoria"
-          className="cursor-pointer block appearance-none w-full bg-gray-600 text-white py-3 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="cursor-pointer block appearance-none w-[150px] bg-gray-600 text-white py-3 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
           defaultValue=""
           onChange={(e) => {
             setCategoriaSelecionada(e.target.value);
@@ -308,7 +309,7 @@
           </button>
         )
       }
-      {userID ? (
+      {userRole=="admin"||userRole=="promoter"? (
         <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' onClick={() => navigate('/promoter')}>
           <p className='text-gray-300 font-bold'>Criar Evento</p>
         </button>
@@ -317,7 +318,7 @@
   </div>
 </header>
         
-           {imagensCapa.length > 0 && <Carousel imagens={imagensCapa} />}
+           {imagensCapa.length > 0 && <Carousel imagens={imagensCapa} titulo={eventos.titulo} />}
 
 
       <main>

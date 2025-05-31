@@ -9,6 +9,7 @@ export default function RegisterEvent() {
 
   const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
+  const [categoria, setCategoria] = useState('')
   const [dataInicio, setDataInicio] = useState('')
   const [dataFim, setDataFim] = useState('')
   const [nomeLocal, setNomeLocal] = useState('')
@@ -38,6 +39,7 @@ export default function RegisterEvent() {
 
     if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
     if (!descricao.trim()) newErrors.descricao = 'Descrição é obrigatória'
+    if (!categoria.trim()) newErrors.categoria = 'Categoria é obrigatória'
     if (!dataInicio) newErrors.dataInicio = 'Data de início é obrigatória'
     if (!dataFim) newErrors.dataFim = 'Data de fim é obrigatória'
     if (!nomeLocal.trim()) newErrors.nomeLocal = 'Nome do local é obrigatório'
@@ -54,26 +56,32 @@ export default function RegisterEvent() {
 
     try {
 
-    const formData = new FormData()
+      const formData = new FormData()
 
-    formData.append('titulo', titulo)
-    formData.append('descricao', descricao)
-    formData.append('dataInicio', dataInicio)
-    formData.append('dataFim', dataFim)
-    formData.append('local[nome]', nomeLocal)
-    formData.append('local[endereco]', endereco)
-    formData.append('local[cidade]', cidade)
-    formData.append('local[estado]', estado)
-    formData.append('local[cep]', cep)
-    formData.append('preco', preco)
-    formData.append('imagemCapa', imagemCapa) 
+      const localObj = {
+        nome: nomeLocal,
+        endereco,
+        cidade,
+        estado,
+        cep
+      }
+
+      formData.append('titulo', titulo)
+      formData.append('descricao', descricao)
+      formData.append('categoria', categoria)
+      formData.append('dataInicioISO', new Date(dataInicio).toISOString())
+      formData.append('dataInicio', dataInicio)
+      formData.append('dataFim', dataFim)
+      formData.append('local', JSON.stringify(localObj))
+      formData.append('preco', preco)
+      formData.append('imagemCapa', imagemCapa) 
 
       await api.post('/eventos', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
        
-        }),
+      }),
         
       
 
@@ -117,6 +125,14 @@ export default function RegisterEvent() {
           <input className={inputClass} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
 
           <textarea className={`${inputClass} col-span-2`} placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+
+          <select className={`${inputClass} bg-[#606070]`} value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+            <option value="">Selecione a categoria</option>
+            <option value="música">Música</option>
+            <option value="esporte">Esporte</option>
+            <option value="teatro">Festival</option>
+            <option value="outros">Moda</option>
+          </select>
 
           <input className={inputClass} type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
           <input className={inputClass} type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
