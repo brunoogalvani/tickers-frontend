@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
+import { format } from 'date-fns'
 
 export default function RegisterEvent() {
   const navigate = useNavigate()
@@ -10,8 +11,8 @@ export default function RegisterEvent() {
   const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [categoria, setCategoria] = useState('')
-  const [dataInicio, setDataInicio] = useState('')
-  const [dataFim, setDataFim] = useState('')
+  const [dataDeInicio, setDataDeInicio] = useState('')
+  const [dataDoFim, setDataDoFim] = useState('')
   const [nomeLocal, setNomeLocal] = useState('')
   const [endereco, setEndereco] = useState('')
   const [cidade, setCidade] = useState('')
@@ -40,8 +41,8 @@ export default function RegisterEvent() {
     if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
     if (!descricao.trim()) newErrors.descricao = 'Descrição é obrigatória'
     if (!categoria.trim()) newErrors.categoria = 'Categoria é obrigatória'
-    if (!dataInicio) newErrors.dataInicio = 'Data de início é obrigatória'
-    if (!dataFim) newErrors.dataFim = 'Data de fim é obrigatória'
+    if (!dataDeInicio) newErrors.dataDeInicio = 'Data de início é obrigatória'
+    if (!dataDoFim) newErrors.dataDoFim = 'Data de fim é obrigatória'
     if (!nomeLocal.trim()) newErrors.nomeLocal = 'Nome do local é obrigatório'
     if (!endereco.trim()) newErrors.endereco = 'Endereço é obrigatório'
     if (!cidade.trim()) newErrors.cidade = 'Cidade é obrigatória'
@@ -66,10 +67,12 @@ export default function RegisterEvent() {
         cep
       }
 
+      const dataInicio = format(new Date(dataDeInicio), 'dd/MM/yyyy')
+      const dataFim = format(new Date(dataDoFim), 'dd/MM/yyyy')
+
       formData.append('titulo', titulo)
       formData.append('descricao', descricao)
       formData.append('categoria', categoria)
-      formData.append('dataInicioISO', new Date(dataInicio).toISOString())
       formData.append('dataInicio', dataInicio)
       formData.append('dataFim', dataFim)
       formData.append('local', JSON.stringify(localObj))
@@ -134,8 +137,8 @@ export default function RegisterEvent() {
             <option value="outros">Moda</option>
           </select>
 
-          <input className={inputClass} type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
-          <input className={inputClass} type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
+          <input className={inputClass} type="date" value={dataDeInicio} onChange={(e) => setDataDeInicio(e.target.value)} />
+          <input className={inputClass} type="date" value={dataDoFim} onChange={(e) => setDataDoFim(e.target.value)} />
 
           <input className={inputClass} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
           <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />

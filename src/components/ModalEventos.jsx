@@ -12,29 +12,41 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
         <div style={styles.contentWrapper}>
          
           {evento.imagemCapa ? (
-            <div style={styles.imageContainer}>
-            <img src={evento.imagemCapa} className="rounded-lg rounded-b-none w-[360px] h-[160px]" />
-            </div>
+            <img src={evento.imagemCapa} className="rounded-lg rounded-b-none h-[240px]" />
           ) : (
             <div style={styles.imagePlaceholder}>Sem imagem</div>
           )}
 
           {/* Conteúdo texto à direita */}
-          <div style={styles.textContent}>
-            <h2>{evento.titulo}</h2>
-            {evento.local ? (
-              <>
-                <p><strong>Nome:</strong> {evento.local.nome}</p>
-                <p><strong>Endereço:</strong> {evento.local.endereco}</p>
-                <p><strong>Cidade:</strong> {evento.local.cidade}</p>
-                <p><strong>Estado:</strong> {evento.local.estado}</p>
-                <p><strong>CEP:</strong> {evento.local.cep}</p>
-              </>
-            ) : (
-              <p>Local não informado.</p>
-            )}
+          <div className='flex flex-col gap-[30px]'>
+            <div className='flex flex-col gap-[5px]'>
+              <h2 className='font-bold text-[28px]'>{evento.titulo}</h2>
+              <p>{evento.dataFim ? (
+                  `${evento.horaInicio} ${evento.dataInicio} - ${evento.dataFim}`
+                ) : (
+                  `${evento.horaInicio} ${evento.dataInicio}`
+                )}
+              </p>
+              <p className='text-base'>{evento.descricao}</p>
+              <p>{evento.preco==0 ? (
+                "Ingresso Gratuito" 
+              ) : (
+                Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL'}).format(evento.preco)
+              )}</p>
+            </div>
+            <div className='flex flex-col'>
+                {evento.local ? (
+                  <>
+                    <p><strong>Local:</strong> {evento.local.nome}</p>
+                    <p><strong>Endereço:</strong> {evento.local.endereco}, {evento.local.cidade} - {evento.local.estado}, {evento.local.cep}</p>
+                  </>
+                ) : (
+                  <p>Local não informado.</p>
+                )}
+            </div>
           </div>
         </div>
+        <button className='bg-white/20 px-4 py-2 float-end mt-5 rounded-xl hover:bg-white/15 transition'>Comprar</button>
       </div>
     </div>
   );
@@ -55,8 +67,7 @@ const styles = {
     backgroundColor: '#1f2937', 
     padding: '30px 25px',
     borderRadius: '12px',
-    width: '600px',
-    maxHeight: '80vh',
+    width: '1200px',
     overflowY: 'auto',
     fontSize: '20px',
     boxShadow: '0 10px 30px rgba(0,0,0,0.3)', 
@@ -70,24 +81,11 @@ const styles = {
   contentWrapper: {
     display: 'flex',
     gap: '20px',
-  },
-  imageContainer: {
-    flexShrink: 0,
-    width: '140px',
-    height: '140px',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    display: 'block',
+    alignItems: 'center'
   },
   imagePlaceholder: {
-    width: '140px',
-    height: '140px',
+    width: '400px',
+    height: '240px',
     borderRadius: '12px',
     backgroundColor: '#374151',
     color: '#9ca3af',
@@ -97,13 +95,10 @@ const styles = {
     fontSize: '14px',
     fontStyle: 'italic',
   },
-  textContent: {
-    flex: 1,
-  },
   closeBtn: {
     position: 'absolute',
     top: '12px',
-    right: '12px',
+    right: '20px',
     border: 'none',
     background: 'transparent',
     fontSize: '24px',
