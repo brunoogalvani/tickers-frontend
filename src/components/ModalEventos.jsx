@@ -12,7 +12,7 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
         <div style={styles.contentWrapper}>
          
           {evento.imagemCapa ? (
-            <img src={evento.imagemCapa} className="rounded-lg rounded-b-none w-[380px]" />
+            <img src={evento.imagemCapa} className="rounded-lg w-[380px]" />
           ) : (
             <div style={styles.imagePlaceholder}>Sem imagem</div>
           )}
