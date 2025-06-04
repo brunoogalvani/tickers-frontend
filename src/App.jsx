@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Register from './pages/Register.jsx'
 import Promoter from './pages/Promoter.jsx'
 import PaginaUsuario from './pages/PaginaUsuario.jsx'
+import Admin from './pages/Admin.jsx'
 function App() {
 
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route index element={<Home />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/promoter' element={<Promoter />}></Route>
+          <Route path='/admin' element={<Admin />}></Route>
       </Routes>
     </Router>
   )

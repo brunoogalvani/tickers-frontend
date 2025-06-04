@@ -292,6 +292,12 @@
             {
               isDropdownOpen ? (
                 <div className='absolute bg-gray-600 flex flex-col inset-x-0 items-start z-50 rounded-xl' ref={dropdownRef}>
+                  {userRole=="admin" ? (
+                    <button onClick={() => navigate('/admin')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Área do Admin</button>
+                  ) : null}
+                  {userRole=="admin"||userRole=="promoter" ? (
+                    <button onClick={() => navigate('/eventos')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Meus eventos</button>
+                  ) : null}
                   <button onClick={() => navigate('/pagina-usuario')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
                   <button onClick={logout} className='hover:bg-black/20 w-full px-4 py-3 text-left rounded-b-xl'>Sair</button>
                 </div>
@@ -310,11 +316,11 @@
           </button>
         )
       }
-      {userRole=="admin"||userRole=="promoter"? (
+      {/* {userRole=="admin"||userRole=="promoter"? (
         <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' onClick={() => navigate('/promoter')}>
           <p className='text-gray-300 font-bold'>Criar Evento</p>
         </button>
-      ) : null}
+      ) : null} */}
     </div>
   </div>
 </header>
