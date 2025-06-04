@@ -73,7 +73,7 @@ export default function RegisterEvent() {
   }
 
   const handleSubmit = async (e) => {
-    // e.preventDefault()
+    e.preventDefault()
     // const newErrors = {}
 
     // if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
@@ -124,7 +124,7 @@ export default function RegisterEvent() {
         headers: {
           "Content-Type": "multipart/form-data"
         }
-      }),
+      })
         
       
 

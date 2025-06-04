@@ -143,6 +143,7 @@
     }
 
     async function getUser() {
+      if (!userID) return
       try {
         const response = await api.get(`/users/${userID}`)
         setUsername(response.data.nome)
