@@ -8,18 +8,22 @@ import { format } from 'date-fns'
 export default function RegisterEvent() {
   const navigate = useNavigate()
 
+  const userId = sessionStorage.getItem('userID')
   const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [categoria, setCategoria] = useState('')
-  const [dataDeInicio, setDataDeInicio] = useState('')
-  const [dataDoFim, setDataDoFim] = useState('')
+  const [dataInicio, setdataInicio] = useState('')
+  const [hora, setHora] = useState('')
+  const [dataFim, setdataFim] = useState('')
   const [nomeLocal, setNomeLocal] = useState('')
   const [endereco, setEndereco] = useState('')
+  const [numero, setNumero] = useState('')
   const [cidade, setCidade] = useState('')
   const [estado, setEstado] = useState('')
   const [cep, setCep] = useState('')
-  const [preco, setPreco] = useState('')
+  const [preco, setPreco] = useState(0)
   const [imagemCapa, setImagemCapa] = useState('')
+  const [qtdIngressos, setQtdIngressos] = useState(0)
   const [errors, setErrors] = useState({})
 
   function formatCep(cep) {
@@ -34,6 +38,40 @@ export default function RegisterEvent() {
     return formatted.join('')
   }
 
+  function formatarData(valor) {
+
+    valor = valor.replace(/\D/g, '');
+
+    if (valor.length > 2 && valor.length <= 4) {
+      valor = valor.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+    } else if (valor.length > 4) {
+      valor = valor.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+    }
+
+    return valor;
+  }
+  
+  function formatarHora(valor) {
+
+    valor = valor.replace(/\D/g, '')
+
+    if (valor.length > 2) {
+      valor = valor.replace(/(\d{2})(\d{1,2})/, '$1:$2')
+    }
+
+    return valor
+  }
+
+  function formatarPreco(valor) {
+    const numero = parseFloat(valor) || 0
+
+    return numero.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
+  }
+
+  function desformatarPreco(valor) {
+    return Number(valor.replace(/\D/g, '')) / 100
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = {}
@@ -41,19 +79,22 @@ export default function RegisterEvent() {
     if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
     if (!descricao.trim()) newErrors.descricao = 'Descrição é obrigatória'
     if (!categoria.trim()) newErrors.categoria = 'Categoria é obrigatória'
-    if (!dataDeInicio) newErrors.dataDeInicio = 'Data de início é obrigatória'
-    if (!dataDoFim) newErrors.dataDoFim = 'Data de fim é obrigatória'
+    if (!dataInicio) newErrors.dataInicio = 'Data de início é obrigatória'
+    if (!dataFim) newErrors.dataFim = 'Data de fim é obrigatória'
     if (!nomeLocal.trim()) newErrors.nomeLocal = 'Nome do local é obrigatório'
     if (!endereco.trim()) newErrors.endereco = 'Endereço é obrigatório'
     if (!cidade.trim()) newErrors.cidade = 'Cidade é obrigatória'
     if (!estado.trim()) newErrors.estado = 'Estado é obrigatório'
     if (cep.replace(/\D/g, '').length < 8) newErrors.cep = 'CEP inválido'
-    if (!preco.trim() || isNaN(preco)) newErrors.preco = 'Preço inválido'
+    if (!preco || preco <= 0) newErrors.preco = 'Preço inválido'
+    if (!qtdIngressos || qtdIngressos <= 0) newErrors.qtdIngressos = 'Quantidade inválida'
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
+
+    const enderecoFinal = `${endereco}, ${numero}`
 
     try {
 
@@ -61,29 +102,28 @@ export default function RegisterEvent() {
 
       const localObj = {
         nome: nomeLocal,
-        endereco,
+        endereco: enderecoFinal,
         cidade,
         estado,
         cep
       }
 
-      const dataInicio = format(new Date(dataDeInicio), 'dd/MM/yyyy')
-      const dataFim = format(new Date(dataDoFim), 'dd/MM/yyyy')
-
       formData.append('titulo', titulo)
       formData.append('descricao', descricao)
       formData.append('categoria', categoria)
       formData.append('dataInicio', dataInicio)
+      formData.append('horaInicio', hora)
       formData.append('dataFim', dataFim)
       formData.append('local', JSON.stringify(localObj))
       formData.append('preco', preco)
-      formData.append('imagemCapa', imagemCapa) 
+      formData.append('imagemCapa', imagemCapa)
+      formData.append('criadoPorId', userId)
+      formData.append('qtdIngressos', qtdIngressos)
 
       await api.post('/eventos', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-       
+          "Content-Type": "multipart/form-data"
+        }
       }),
         
       
@@ -108,7 +148,7 @@ export default function RegisterEvent() {
   }
 
   const inputClass =
-    'w-full bg-white/10 backdrop-blur-md rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
+    'w-full col-span-2 bg-white/10 backdrop-blur-md rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
   return (
     <motion.div
@@ -123,33 +163,46 @@ export default function RegisterEvent() {
       >
         <p className="text-2xl font-semibold mb-2">Criar Evento</p>
 
-        <div className="grid grid-cols-2 gap-6 w-full">
-          <input className={inputClass} type="text" placeholder="Título do evento" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
-          <input className={inputClass} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
-
-          <textarea className={`${inputClass} col-span-2`} placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
-
-          <select className={`${inputClass} bg-[#606070]`} value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+        <div className="grid grid-cols-5 gap-6 w-full">
+          <input className={`${inputClass} col-span-3`} type="text" placeholder="Título do evento" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+          <select className="w-full col-span-2 cursor-pointer bg-[#606070] text-white text-sm px-4 rounded transition duration-200 focus:ring-2 focus:ring-yellow-300" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
             <option value="">Selecione a categoria</option>
-            <option value="música">Música</option>
-            <option value="esporte">Esporte</option>
-            <option value="teatro">Festival</option>
-            <option value="outros">Moda</option>
+            <option value="Música">Música</option>
+            <option value="Esporte">Esporte</option>
+            <option value="Festival">Festival</option>
+            <option value="Moda">Moda</option>
+            <option value="Artes">Artes</option>
+            <option value="Turismo">Turismo</option>
+            <option value="Cultura">Cultura</option>
+            <option value="Gastronomia">Gastronomia</option>
+            <option value="Entretenimento">Entretenimento</option>
+            <option value="Teste">Teste</option>
           </select>
+          <textarea className={`${inputClass} col-span-5`} placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+          
+          <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>  
+            <input className={`${inputClass} col-span-1`} type="text" value={dataInicio} onChange={(e) => setdataInicio(formatarData(e.target.value))} placeholder='Data de Início' maxLength={10} />
+            <input className={`${inputClass} col-span-1`} type="text" value={hora} onChange={(e) => setHora(formatarHora(e.target.value))} placeholder='Horário de Início' maxLength={5} />
+            <input className={`${inputClass} col-span-1`} type="text" value={dataFim} onChange={(e) => setdataFim(formatarData(e.target.value))} placeholder='Data do Fim' maxLength={10} />
+          </div>
+          
+          <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
+            
+            <input className={inputClass} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
 
-          <input className={inputClass} type="date" value={dataDeInicio} onChange={(e) => setDataDeInicio(e.target.value)} />
-          <input className={inputClass} type="date" value={dataDoFim} onChange={(e) => setDataDoFim(e.target.value)} />
+            <input className={inputClass} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="Número" value={numero} onChange={(e) => setNumero(e.target.value)} />
+            <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
 
-          <input className={inputClass} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
-          <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)} />
+          </div>
 
-          <input className={inputClass} type="text" placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)} />
-          <input className={inputClass} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
-
-          <input className={inputClass} type="number" placeholder="Preço (R$)" value={preco} onChange={(e) => setPreco(e.target.value)} />
-
-          <input className={inputClass} type="file" accept="image/*" onChange={(e) => setImagemCapa(e.target.files[0])} />
-
+          <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="Preço (R$)" value={formatarPreco(preco)} onChange={(e) => {const valorNumerico = desformatarPreco(e.target.value); setPreco(valorNumerico)}} />
+            <input className={`${inputClass} col-span-1`} type="number" placeholder="Quantidade de Ingressos" value={qtdIngressos} onChange={(e) => setQtdIngressos(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="file" accept="image/*" onChange={(e) => setImagemCapa(e.target.files[0])} />
+          </div>
         </div>
 
 
