@@ -73,26 +73,26 @@ export default function RegisterEvent() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const newErrors = {}
+    // e.preventDefault()
+    // const newErrors = {}
 
-    if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
-    if (!descricao.trim()) newErrors.descricao = 'Descrição é obrigatória'
-    if (!categoria.trim()) newErrors.categoria = 'Categoria é obrigatória'
-    if (!dataInicio) newErrors.dataInicio = 'Data de início é obrigatória'
-    if (!dataFim) newErrors.dataFim = 'Data de fim é obrigatória'
-    if (!nomeLocal.trim()) newErrors.nomeLocal = 'Nome do local é obrigatório'
-    if (!endereco.trim()) newErrors.endereco = 'Endereço é obrigatório'
-    if (!cidade.trim()) newErrors.cidade = 'Cidade é obrigatória'
-    if (!estado.trim()) newErrors.estado = 'Estado é obrigatório'
-    if (cep.replace(/\D/g, '').length < 8) newErrors.cep = 'CEP inválido'
-    if (!preco || preco <= 0) newErrors.preco = 'Preço inválido'
-    if (!qtdIngressos || qtdIngressos <= 0) newErrors.qtdIngressos = 'Quantidade inválida'
+    // if (!titulo.trim()) newErrors.titulo = 'Título é obrigatório'
+    // if (!descricao.trim()) newErrors.descricao = 'Descrição é obrigatória'
+    // if (!categoria.trim()) newErrors.categoria = 'Categoria é obrigatória'
+    // if (!dataInicio) newErrors.dataInicio = 'Data de início é obrigatória'
+    // if (!dataFim) newErrors.dataFim = 'Data de fim é obrigatória'
+    // if (!nomeLocal.trim()) newErrors.nomeLocal = 'Nome do local é obrigatório'
+    // if (!endereco.trim()) newErrors.endereco = 'Endereço é obrigatório'
+    // if (!cidade.trim()) newErrors.cidade = 'Cidade é obrigatória'
+    // if (!estado.trim()) newErrors.estado = 'Estado é obrigatório'
+    // if (cep.replace(/\D/g, '').length < 8) newErrors.cep = 'CEP inválido'
+    // if (!preco || preco <= 0) newErrors.preco = 'Preço inválido'
+    // if (!qtdIngressos || qtdIngressos <= 0) newErrors.qtdIngressos = 'Quantidade inválida'
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    }
+    // if (Object.keys(newErrors).length > 0) {
+    //   setErrors(newErrors)
+    //   return
+    // }
 
     const enderecoFinal = `${endereco}, ${numero}`
 
@@ -148,7 +148,7 @@ export default function RegisterEvent() {
   }
 
   const inputClass =
-    'w-full col-span-2 bg-white/10 backdrop-blur-md rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
+    'w-full bg-white/10 backdrop-blur-md rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
   return (
     <motion.div
@@ -189,9 +189,9 @@ export default function RegisterEvent() {
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
             <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
             
-            <input className={inputClass} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
+            <input className={`${inputClass} col-span-2`} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
 
-            <input className={inputClass} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+            <input className={`${inputClass} col-span-2`} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Número" value={numero} onChange={(e) => setNumero(e.target.value)} />
             <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
 
