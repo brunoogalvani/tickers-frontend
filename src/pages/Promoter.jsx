@@ -252,7 +252,7 @@ export default function RegisterEvent() {
 
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Preço (R$)" value={formatarPreco(preco)} onChange={(e) => {const valorNumerico = desformatarPreco(e.target.value); setPreco(valorNumerico)}} />
-            <input className={`${inputClass} col-span-1`} type="number" placeholder="Quantidade de Ingressos" value={qtdIngressos} onChange={(e) => setQtdIngressos(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="number" placeholder="Quantidade de Ingressos" value={qtdIngressos>0 ? qtdIngressos : ''} onChange={(e) => setQtdIngressos(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="file" accept="image/*" onChange={(e) => setImagemCapa(e.target.files[0])} />
           </div>
         </div>
