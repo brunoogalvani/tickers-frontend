@@ -316,11 +316,6 @@
           </button>
         )
       }
-      {/* {userRole=="admin"||userRole=="promoter"? (
-        <button className='flex items-center rounded-lg hover:bg-gray-800/35 transition px-4 py-2 h-[60px]' onClick={() => navigate('/promoter')}>
-          <p className='text-gray-300 font-bold'>Criar Evento</p>
-        </button>
-      ) : null} */}
     </div>
   </div>
 </header>

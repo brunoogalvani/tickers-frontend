@@ -26,6 +26,36 @@ export default function RegisterEvent() {
   const [qtdIngressos, setQtdIngressos] = useState(0)
   const [errors, setErrors] = useState({})
 
+  const nomesEstados = {
+    "Acre": "AC",
+    "Alagoas": "AL",
+    "Amapá": "AP",
+    "Amazonas": "AM",
+    "Bahia": "BA",
+    "Ceará": "CE",
+    "Distrito Federal": "DF",
+    "Espírito Santo": "ES",
+    "Goiás": "GO",
+    "Maranhão": "MA",
+    "Mato Grosso": "MT",
+    "Mato Grosso do Sul": "MS",
+    "Minas Gerais": "MG",
+    "Pará": "PA",
+    "Paraíba": "PB",
+    "Paraná": "PR",
+    "Pernambuco": "PE",
+    "Piauí": "PI",
+    "Rio de Janeiro": "RJ",
+    "Rio Grande do Norte": "RN",
+    "Rio Grande do Sul": "RS",
+    "Rondônia": "RO",
+    "Roraima": "RR",
+    "Santa Catarina": "SC",
+    "São Paulo": "SP",
+    "Sergipe": "SE",
+    "Tocantins": "TO"
+  };
+
   function formatCep(cep) {
     const cepClean = cep.replace(/\D/g, '').slice(0, 8)
     const cepMatch = cepClean.match(/^(\d{0,5})(\d{0,3})$/)
@@ -70,6 +100,29 @@ export default function RegisterEvent() {
 
   function desformatarPreco(valor) {
     return Number(valor.replace(/\D/g, '')) / 100
+  }
+
+  const fetchLocalData = async (nomeLocal) => {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(nomeLocal)}&format=json&addressdetails=1`
+    console.log(`Nome do Local: ${nomeLocal}`)
+    
+    try {
+      const response = await fetch(url)
+      const data = await response.json()
+
+      if (data.length > 0) {
+        const address = data[0].address
+        setEndereco(address.road || '');
+        setNumero(address.house_number || '');
+        setCidade(address.city || address.town || address.village || '');
+        setEstado(nomesEstados[address.state] || '');
+        setCep(address.postcode || '');
+      } else {
+        console.log('Sem endereço')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar local pelo nome:', error)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -187,15 +240,14 @@ export default function RegisterEvent() {
           </div>
           
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
-            <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
+            <input className={`${inputClass} col-span-2`} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} onBlur={() => fetchLocalData(nomeLocal)} />
             
-            <input className={`${inputClass} col-span-2`} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
-
             <input className={`${inputClass} col-span-2`} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Número" value={numero} onChange={(e) => setNumero(e.target.value)} />
-            <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
 
+            <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
           </div>
 
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
