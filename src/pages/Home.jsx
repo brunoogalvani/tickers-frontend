@@ -296,9 +296,9 @@
                     <button onClick={() => navigate('/admin')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Área do Admin</button>
                   ) : null}
                   {userRole=="admin"||userRole=="promoter" ? (
-                    <button onClick={() => navigate('/eventos')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Meus eventos</button>
+                    <button onClick={() => navigate('/eventos')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left'>Meus eventos</button>
                   ) : null}
-                  <button onClick={() => navigate('/pagina-usuario')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left rounded-t-xl'>Editar conta</button>
+                  <button onClick={() => navigate('/pagina-usuario')} className='hover:bg-black/20 transition w-full px-4 py-3 text-left'>Editar conta</button>
                   <button onClick={logout} className='hover:bg-black/20 w-full px-4 py-3 text-left rounded-b-xl'>Sair</button>
                 </div>
               ) : null
