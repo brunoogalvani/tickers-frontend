@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
-import { format } from 'date-fns'
 
 export default function RegisterEvent() {
   const navigate = useNavigate()
@@ -17,6 +16,7 @@ export default function RegisterEvent() {
   const [dataFim, setdataFim] = useState('')
   const [nomeLocal, setNomeLocal] = useState('')
   const [endereco, setEndereco] = useState('')
+  const [bairro, setBairro] = useState('')
   const [numero, setNumero] = useState('')
   const [cidade, setCidade] = useState('')
   const [estado, setEstado] = useState('')
@@ -25,36 +25,6 @@ export default function RegisterEvent() {
   const [imagemCapa, setImagemCapa] = useState('')
   const [qtdIngressos, setQtdIngressos] = useState(0)
   const [errors, setErrors] = useState({})
-
-  const nomesEstados = {
-    "Acre": "AC",
-    "Alagoas": "AL",
-    "Amapá": "AP",
-    "Amazonas": "AM",
-    "Bahia": "BA",
-    "Ceará": "CE",
-    "Distrito Federal": "DF",
-    "Espírito Santo": "ES",
-    "Goiás": "GO",
-    "Maranhão": "MA",
-    "Mato Grosso": "MT",
-    "Mato Grosso do Sul": "MS",
-    "Minas Gerais": "MG",
-    "Pará": "PA",
-    "Paraíba": "PB",
-    "Paraná": "PR",
-    "Pernambuco": "PE",
-    "Piauí": "PI",
-    "Rio de Janeiro": "RJ",
-    "Rio Grande do Norte": "RN",
-    "Rio Grande do Sul": "RS",
-    "Rondônia": "RO",
-    "Roraima": "RR",
-    "Santa Catarina": "SC",
-    "São Paulo": "SP",
-    "Sergipe": "SE",
-    "Tocantins": "TO"
-  };
 
   function formatCep(cep) {
     const cepClean = cep.replace(/\D/g, '').slice(0, 8)
@@ -102,26 +72,43 @@ export default function RegisterEvent() {
     return Number(valor.replace(/\D/g, '')) / 100
   }
 
-  const fetchLocalData = async (nomeLocal) => {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(nomeLocal)}&format=json&addressdetails=1`
-    console.log(`Nome do Local: ${nomeLocal}`)
+  const buscarEndereco = async () => {
+    const cepLimpo = cep.replace(/\D/g, '')
+    if (!cepLimpo) {
+      setEndereco('')
+      setBairro('')
+      setCidade('')
+      setEstado('')
+      return
+    }
+
+    if (cepLimpo.length !== 8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'CEP incompleto',
+        confirmButtonColor: '#E37C6D',
+      })
+      return
+    }
     
     try {
-      const response = await fetch(url)
+      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
       const data = await response.json()
 
-      if (data.length > 0) {
-        const address = data[0].address
-        setEndereco(address.road || '');
-        setNumero(address.house_number || '');
-        setCidade(address.city || address.town || address.village || '');
-        setEstado(nomesEstados[address.state] || '');
-        setCep(address.postcode || '');
+      if (!data.erro) {
+        setEndereco(data.logradouro)
+        setBairro(data.bairro)
+        setCidade(data.localidade)
+        setEstado(data.uf)
       } else {
-        console.log('Sem endereço')
+        Swal.fire({
+          icon: 'error',
+          title: 'CEP inválido',
+          confirmButtonColor: '#E37C6D',
+        })
       }
     } catch (error) {
-      console.error('Erro ao buscar local pelo nome:', error)
+      console.error('Erro ao buscar CEP:', error)
     }
   }
 
@@ -240,14 +227,15 @@ export default function RegisterEvent() {
           </div>
           
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
-            <input className={`${inputClass} col-span-2`} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} onBlur={() => fetchLocalData(nomeLocal)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} onBlur={buscarEndereco} />
+            <input className={`${inputClass} col-span-2`} type="text" placeholder="Nome do local" value={nomeLocal} onChange={(e) => setNomeLocal(e.target.value)} />
             
-            <input className={`${inputClass} col-span-2`} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+            <input className={`${inputClass} col-span-1`} type="text" placeholder="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Número" value={numero} onChange={(e) => setNumero(e.target.value)} />
 
             <input className={inputClass} type="text" placeholder="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} />
             <input className={`${inputClass} col-span-1`} type="text" placeholder="Estado" value={estado} onChange={(e) => setEstado(e.target.value)} />
-            <input className={`${inputClass} col-span-1`} type="text" placeholder="CEP" value={formatCep(cep)} onChange={(e) => setCep(e.target.value)} />
           </div>
 
           <div className='col-span-5 grid grid-cols-3 gap-6 w-full'>
