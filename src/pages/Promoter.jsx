@@ -1,6 +1,6 @@
 import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
 
@@ -25,6 +25,17 @@ export default function RegisterEvent() {
   const [imagemCapa, setImagemCapa] = useState('')
   const [qtdIngressos, setQtdIngressos] = useState(0)
   const [errors, setErrors] = useState({})
+  const userRole = sessionStorage.getItem('userRole')
+  
+  useEffect(() => {
+    if(!userId) {
+      navigate('/')
+    } else {
+      if (userRole !== "admin" && userRole !== "promoter") {
+        navigate('/');
+      }
+    }
+  }, [userRole]);
 
   function formatCep(cep) {
     const cepClean = cep.replace(/\D/g, '').slice(0, 8)
@@ -134,7 +145,7 @@ export default function RegisterEvent() {
     //   return
     // }
 
-    const enderecoFinal = `${endereco}, ${numero}`
+    const enderecoFinal = `${endereco}, ${numero} - ${bairro}`
 
     try {
 
@@ -156,7 +167,7 @@ export default function RegisterEvent() {
       formData.append('dataFim', dataFim)
       formData.append('local', JSON.stringify(localObj))
       formData.append('preco', preco)
-      formData.append('imagemCapa', imagemCapa)
+      if (imagemCapa) formData.append('imagemCapa', imagemCapa)
       formData.append('criadoPorId', userId)
       formData.append('qtdIngressos', qtdIngressos)
 
@@ -174,7 +185,7 @@ export default function RegisterEvent() {
         text: 'Seu evento foi registrado com sucesso!',
         confirmButtonColor: '#E37C6D',
       }).then(() => {
-        navigate('/')
+        navigate('/eventos')
       })
     } catch (error) {
       console.error('Erro ao registrar evento:', error)
@@ -253,7 +264,7 @@ export default function RegisterEvent() {
 
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/eventos')}
             className="px-6 py-2 bg-white text-black rounded-xl hover:bg-gray-800 hover:text-white transition"
           >
             Cancelar

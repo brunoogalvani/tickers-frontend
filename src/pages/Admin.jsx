@@ -9,6 +9,13 @@ export default function Admin() {
   const [usuarios, setUsuarios] = useState([])
   const navigate = useNavigate()
   const userId = sessionStorage.getItem('userID')
+  const userRole = sessionStorage.getItem('userRole')
+
+  useEffect(() => {
+    if (userRole !== "admin") {
+      navigate('/');
+    }
+  }, [userRole]);
 
   useEffect(() => {
     listarUsuários()

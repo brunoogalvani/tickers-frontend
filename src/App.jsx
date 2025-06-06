@@ -5,6 +5,7 @@ import Register from './pages/Register.jsx'
 import Promoter from './pages/Promoter.jsx'
 import PaginaUsuario from './pages/PaginaUsuario.jsx'
 import Admin from './pages/Admin.jsx'
+import Eventos from './pages/Eventos.jsx'
 function App() {
 
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/promoter' element={<Promoter />}></Route>
           <Route path='/admin' element={<Admin />}></Route>
+          <Route path='/eventos' element={<Eventos />}></Route>
       </Routes>
     </Router>
   )
