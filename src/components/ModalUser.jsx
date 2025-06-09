@@ -26,7 +26,9 @@ export default function ModalUser({ onClose }) {
         icon: 'success',
         title: 'Conta criada!',
         text: 'Usuário registrado com sucesso!',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       })
 
     } catch (error) {
@@ -35,7 +37,9 @@ export default function ModalUser({ onClose }) {
         icon: 'error',
         title: 'Erro ao criar conta',
         text: 'Verifique os dados e tente novamente.',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       })
     }
   }
@@ -77,17 +81,17 @@ export default function ModalUser({ onClose }) {
   }
 
   const inputClass =
-    'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
+    'w-[300px] bg-white/20 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center text-center bg-black bg-opacity-50">
-      <div className="bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)] rounded-xl shadow-lg p-6 max-w-md w-full relative">
-        <h1 className="text-white font-bold">Criar Usuário</h1>
+      <div className="bg-[#1c1d3f] rounded-xl p-6 max-w-md w-full relative">
+        <h1 className="text-white font-bold text-3xl">Criar Usuário</h1>
         <form
         onKeyDown={handleKeyPress}
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-2 border-2 border-none p-6 rounded-2xl shadow-lg h-auto w-[400px]"
+        className="flex flex-col items-center gap-2 border-2 border-none p-6 rounded-2xl h-auto w-[400px]"
       >
 
         <input
@@ -124,7 +128,7 @@ export default function ModalUser({ onClose }) {
           maxLength={16}
         />
 
-        <select className="w-[300px] h-[35px] cursor-pointer bg-[#444455] text-white text-sm px-4 rounded transition duration-200 focus:ring-2 focus:ring-yellow-300" value={role} onChange={(e) => setRole(e.target.value)} defaultValue=''>
+        <select className="w-[300px] h-[35px] cursor-pointer bg-[#4d4d61] text-white text-sm px-4 rounded transition duration-200 focus:ring-2 focus:ring-yellow-300" value={role} onChange={(e) => setRole(e.target.value)} defaultValue=''>
           <option value="" disabled hidden>Cargo do Usuário</option>
           <option value="user">USER</option>
           <option value="admin">ADMIN</option>
@@ -154,11 +158,11 @@ export default function ModalUser({ onClose }) {
           placeholder="Digite sua senha"
         />
 
-        <button type="submit" className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95">Criar conta</button>
+        <button type="submit" className="mt-4 px-4 py-2 text-black bg-yellow-400 rounded-xl hover:bg-yellow-600 transition w-[250px]">Criar conta</button>
       </form>
         <button
           onClick={onClose}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="w-[250px] px-6 py-2 bg-white text-black rounded-xl hover:bg-white/70 transition"
             >
           Fechar
         </button>

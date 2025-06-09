@@ -83,20 +83,30 @@ export default function PaginaUsuario() {
   }
 
   async function userDelete() {
-    try {
-        await api.delete(`/users/${userID}`);
-        sessionStorage.clear();
-        Swal.fire({
-            icon: 'success',
-            title: 'Conta deletada!',
-            text: 'Sua conta foi deletada com sucesso!',
-            confirmButtonColor: '#FF0000',
-        }).then(() => {
-            navigate('/');
-        })
-    } catch (error) {
-      console.error('Erro ao excluir usuário', error);
-    }
+    Swal.fire({
+        title: 'Deseja excluir sua conta?',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Excluir',
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await api.delete(`/users/${userID}`);
+            sessionStorage.clear();
+            Swal.fire({
+                icon: 'success',
+                title: 'Conta deletada!',
+                text: 'Sua conta foi deletada com sucesso!',
+                confirmButtonColor: '#FF0000',
+            }).then(() => {
+                navigate('/');
+            })
+          } catch (error) {
+            console.error('Erro ao excluir usuário', error);
+          }
+        }
+    })
   }
 
   if (!userData) {
@@ -167,7 +177,7 @@ export default function PaginaUsuario() {
         <div className="mt-10 flex flex-wrap justify-between items-center gap-4">
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 hover:bg-blue-700 transition px-5 py-2 rounded-xl text-white"
+            className="px-6 py-2 bg-white text-black rounded-xl hover:bg-white/70 transition"
           >
             Voltar
           </button>
@@ -191,7 +201,7 @@ export default function PaginaUsuario() {
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="bg-yellow-500 hover:bg-yellow-600 transition px-5 py-2 rounded-xl text-white"
+                className="bg-yellow-400 text-black hover:bg-yellow-600 transition px-5 py-2 rounded-xl"
               >
                 Editar Conta
               </button>

@@ -1,7 +1,6 @@
 import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
 
 export default function RegisterEvent() {
@@ -97,7 +96,9 @@ export default function RegisterEvent() {
       Swal.fire({
         icon: 'error',
         title: 'CEP incompleto',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       })
       return
     }
@@ -115,7 +116,9 @@ export default function RegisterEvent() {
         Swal.fire({
           icon: 'error',
           title: 'CEP inválido',
-          confirmButtonColor: '#E37C6D',
+          color: 'white',
+          confirmButtonColor: '#db9d00',
+          background: '#16213e'
         })
       }
     } catch (error) {
@@ -183,7 +186,9 @@ export default function RegisterEvent() {
         icon: 'success',
         title: 'Evento criado!',
         text: 'Seu evento foi registrado com sucesso!',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       }).then(() => {
         navigate('/eventos')
       })
@@ -193,7 +198,9 @@ export default function RegisterEvent() {
         icon: 'error',
         title: 'Erro ao criar evento',
         text: 'Verifique os dados e tente novamente.',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       })
     }
   }
@@ -202,12 +209,7 @@ export default function RegisterEvent() {
     'w-full bg-white/10 backdrop-blur-md rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]"
-    >
+    <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-start gap-6 p-8 rounded-2xl shadow-lg w-[1000px] bg-white/10 backdrop-blur-lg border border-white/20"
@@ -258,19 +260,19 @@ export default function RegisterEvent() {
 
 
         <div className="flex gap-4 mt-6">
-          <button type="submit" className="px-6 py-2 bg-yellow-400 text-black rounded-xl hover:bg-yellow-500 transition">
+          <button type="submit" className="px-6 py-2 bg-yellow-400 text-black rounded-xl hover:bg-yellow-600 transition">
             Publicar Evento
           </button>
 
           <button
             type="button"
             onClick={() => navigate('/eventos')}
-            className="px-6 py-2 bg-white text-black rounded-xl hover:bg-gray-800 hover:text-white transition"
+            className="px-6 py-2 bg-white text-black rounded-xl hover:bg-white/70 transition"
           >
             Cancelar
           </button>
         </div>
       </form>
-    </motion.div>
+    </div>  
   )
 }

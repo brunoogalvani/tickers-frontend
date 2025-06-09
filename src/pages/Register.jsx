@@ -1,7 +1,6 @@
 import api from '../services/api'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import Swal from 'sweetalert2'
 
 export default function Register() {
@@ -30,7 +29,9 @@ export default function Register() {
         icon: 'success',
         title: 'Conta criada!',
         text: 'Sua conta foi registrada com sucesso!',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       }).then(() => {
         autenticar() 
       })
@@ -41,7 +42,9 @@ export default function Register() {
         icon: 'error',
         title: 'Erro ao criar conta',
         text: 'Verifique os dados e tente novamente.',
-        confirmButtonColor: '#E37C6D',
+        color: 'white',
+        confirmButtonColor: '#db9d00',
+        background: '#16213e'
       })
     }
   }
@@ -112,7 +115,7 @@ export default function Register() {
   }
 
   const inputClass =
-    'w-[300px] bg-white/10 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
+    'w-[300px] bg-white/20 backdrop-blur-sm rounded text-white text-sm placeholder-white/65 outline-none px-4 py-2 transition duration-200 focus:ring-2 focus:ring-yellow-300'
 
   const errorClass = 'text-red-400 font-bold text-sm -mt-2 mb-2 pl-1'
 
@@ -123,17 +126,12 @@ export default function Register() {
       }
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6}}
-      className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]"
-    >
+  return (     
+    <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
       <form
         onKeyDown={handleKeyPress}
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-2 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-auto w-[400px]"
+        className="flex flex-col items-center gap-2 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-auto w-[400px]"
       >
         <p className="text-2xl font-semibold mb-2">Criar Conta</p>
 
@@ -218,22 +216,15 @@ export default function Register() {
         {errors.confirmarSenha && <p className={errorClass}>{errors.confirmarSenha}</p>}
 
         <button
-        
-          
           type="submit"
-          className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+          className="mt-4 px-4 py-2 bg-yellow-400 text-black rounded-3xl hover:bg-yellow-600 transition w-[300px]"
         >
           Criar conta
         </button>
 
-        <button
-          type="button"
-          onClick={() => navigate('/login')}
-          className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
-        >
-          Voltar
-        </button>
+        <Link to='/login' className='mt-2 text-[15px] hover:underline'>Já possui uma conta?</Link>
+
       </form>
-    </motion.div>
+    </div>
   )
 }

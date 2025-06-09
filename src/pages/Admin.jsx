@@ -33,12 +33,38 @@ export default function Admin() {
 
   async function excluirUsuario(id) {
     if (id) {
-      try {
-        await api.delete(`/users/${id}`)
-        Swal.fire('Usuário excluído com sucesso!', '', 'success')
-      } catch (error) {
-        Swal.fire('Erro ao excluir usuário', '', 'error')
-      }
+      Swal.fire({
+        title: 'Deseja excluir este usuário?',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Excluir',
+        color: 'white',
+        confirmButtonColor: '#a30000',
+        background: '#16213e'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await api.delete(`/users/${id}`)
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuário excluído com sucesso!',
+              color: 'white',
+              confirmButtonColor: '#db9d00',
+              background: '#16213e'
+            })
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro ao excluir usuário',
+              color: 'white',
+              confirmButtonColor: '#db9d00',
+              background: '#16213e'
+            })
+          }
+        }
+      })
+      return
     }
   }
 
@@ -48,9 +74,9 @@ export default function Admin() {
         <h1 className="text-3xl font-bold mb-6">Gerenciamento de Usuários</h1>
 
         <div className="flex flex-col items-center gap-4">
-          <div className='h-[250px] w-[450px] overflow-auto p-2'>
+          <div className='h-[250px] w-[450px] overflow-auto pr-4'>
             {usuarios.map(usuario => (
-              <div key={usuario.id} className='bg-white/10 mb-2 p-[10px] rounded-xl ring-1 ring-yellow-300 last:mb-0 flex justify-between items-center'>
+              <div key={usuario.id} className='bg-white/10 mb-2 p-[10px] rounded-xl border border-white/20 last:mb-0 flex justify-between items-center'>
                 <div className='flex flex-col'>
                   <h1><strong>Nome: </strong>{usuario.nome}</h1>
                   <h1><strong>Email: </strong>{usuario.email}</h1>
@@ -69,14 +95,14 @@ export default function Admin() {
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex flex-col items-center space-y-6 border-2 border-none px-6 py-2 bg-gray-500/30 rounded-xl shadow-lg w-[300px]">
+            className="flex flex-col items-center space-y-6 border-2 border-none px-6 py-2 bg-yellow-400 text-black rounded-xl hover:bg-yellow-600 transition w-[300px]">
             Criar Usuário
           </button>
 
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="px-6 py-2 bg-white text-black rounded-xl hover:bg-gray-800 hover:text-white transition
+            className="px-6 py-2 bg-white text-black rounded-xl hover:bg-white/70 transition
              w-[300px]">
             Voltar
           </button>

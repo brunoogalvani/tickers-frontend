@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import ModalLogin from '../components/ModalLogin'
 import api from '../services/api'
@@ -25,18 +25,21 @@ function Login() {
             Swal.fire({
                 icon: 'success',
                 title: 'Login efetuado!',
-                confirmButtonColor: '#E37C6D',
+                color: 'white',
+                confirmButtonColor: '#db9d00',
+                background: '#16213e'
             }).then(() => {
                 navigate('/')
             })
-
         } catch (error) {
             console.error('Erro ao autenticar:', error)
             Swal.fire({
                 icon: 'error',
                 title: 'Erro ao entrar na conta',
                 text: 'Verifique os dados e tente novamente.',
-                confirmButtonColor: '#E37C6D',
+                color: 'white',
+                confirmButtonColor: '#db9d00',
+                background: '#16213e'
             })
         } 
     }
@@ -57,7 +60,7 @@ function Login() {
 
             <div className="min-h-screen text-white flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_#1a1a2e,_#16213e)]">
         
-                <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg h-[450px] w-[400px]">
+                <div className="flex flex-col items-center space-y-6 border-2 border-none p-6 bg-gray-500/30 rounded-2xl shadow-lg w-[400px]">
                     <p className="text-2xl font-semibold">Login</p>
             
                     <svg className="w-[75px] h-[75px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -67,7 +70,7 @@ function Login() {
                     <form 
                         onKeyDown={handleKeyPress}
                         onSubmit={handleSubmit}
-                        className="flex flex-col items-center space-y-6 w-full"
+                        className="flex flex-col items-center gap-4 w-full"
                     >
                         <input
                             name="email"
@@ -93,29 +96,24 @@ function Login() {
 
                         <button 
                             type="submit"
-                            className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
+                            className="mt-4 px-4 py-2 bg-yellow-400 text-black rounded-3xl hover:bg-yellow-600 transition w-[300px]"
                             id="entrar"              
                         >
                             Entrar
                         </button>
+
                         <button
-                            type='button' 
-                            onClick={() => navigate('/register')}
-                            className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
-                            id="criar-conta"  
+                            type="button"
+                            onClick={() => navigate('/')}
+                            className="mt-1 px-4 py-2 bg-white text-black rounded-3xl hover:bg-white/70 transition w-[300px]"
+                            id="voltar-home"
                         >
-                            Criar conta
+                            Voltar para Home
                         </button>
+                        
+                        <Link to='/register' className='mt-1 text-[15px] hover:underline'>Ainda não possui uma conta?</Link>
                     </form>
                 </div>
-          
-                <button
-                    onClick={() => navigate('/')}
-                    className="mt-2 px-4 py-2 bg-white/50 text-black rounded-3xl hover:bg-gray-800 hover:text-white transition w-[300px] hover:scale-105 active:scale-95"
-                    id="voltar-home"
-                >
-                    Voltar para Home
-                </button>
             </div>
 
             <main>
