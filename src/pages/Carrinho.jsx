@@ -1,30 +1,23 @@
-import { useEffect, useState } from 'react'
-import api from '../services/api'
+import { useState } from 'react'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 
 export default function Carrinho() {
     const navigate = useNavigate()
-    const userId = sessionStorage.getItem('userID')
-    const [carrinho, setCarrinho] = useState([])
 
-    useEffect(() => {
-        if (!userId) {
-            navigate('/')
+    // Simulação de dados do carrinho
+    const [carrinho, setCarrinho] = useState([
+        {
+            id: 1,
+            titulo: "Evento Exemplo",
+            preco: 50,
+            descricao: "Descrição do evento exemplo.",
+            categoria: "Música",
+            imagemCapa: null
         }
-        fetchCarrinho()
-    }, [])
+    ])
 
-    async function fetchCarrinho() {
-        try {
-            const response = await api.get(`/users/${userId}/carrinho`)
-            setCarrinho(response.data)
-        } catch (error) {
-            console.error("Erro ao buscar o carrinho", error)
-        }
-    }
-
-    async function removerItem(eventoId) {
+    function removerItem(eventoId) {
         Swal.fire({
             title: 'Remover este evento do carrinho?',
             icon: 'warning',
@@ -34,32 +27,23 @@ export default function Carrinho() {
             color: 'white',
             confirmButtonColor: '#a30000',
             background: '#16213e'
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                try {
-                    await api.delete(`/users/${userId}/carrinho/${eventoId}`)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Item removido!',
-                        color: 'white',
-                        confirmButtonColor: '#db9d00',
-                        background: '#16213e'
-                    })
-                    fetchCarrinho()
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro ao remover item',
-                        color: 'white',
-                        confirmButtonColor: '#db9d00',
-                        background: '#16213e'
-                    })
-                }
+                const novoCarrinho = carrinho.filter(item => item.id !== eventoId)
+                setCarrinho(novoCarrinho)
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Item removido!',
+                    color: 'white',
+                    confirmButtonColor: '#db9d00',
+                    background: '#16213e'
+                })
             }
         })
     }
 
-    async function finalizarCompra() {
+    function finalizarCompra() {
         Swal.fire({
             title: 'Finalizar compra?',
             icon: 'question',
@@ -69,27 +53,16 @@ export default function Carrinho() {
             color: 'white',
             confirmButtonColor: '#28a745',
             background: '#16213e'
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                try {
-                    await api.post(`/users/${userId}/finalizar-compra`)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Compra finalizada com sucesso!',
-                        color: 'white',
-                        confirmButtonColor: '#db9d00',
-                        background: '#16213e'
-                    })
-                    navigate('/meus-eventos')
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro ao finalizar compra',
-                        color: 'white',
-                        confirmButtonColor: '#db9d00',
-                        background: '#16213e'
-                    })
-                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Compra finalizada com sucesso!',
+                    color: 'white',
+                    confirmButtonColor: '#db9d00',
+                    background: '#16213e'
+                })
+                navigate('/meus-eventos')
             }
         })
     }
@@ -116,8 +89,8 @@ export default function Carrinho() {
 
                                         <div className='flex flex-col gap-[10px] w-[700px]'>
                                             <h2 className='font-bold text-[24px]'>{item.titulo}</h2>
-                                            <p>{item.preco == 0 ? (
-                                                "Ingresso Gratuito" 
+                                            <p>{item.preco === 0 ? (
+                                                "Ingresso Gratuito"
                                             ) : (
                                                 Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.preco)
                                             )}</p>
