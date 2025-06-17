@@ -45,14 +45,14 @@ export default function Eventos() {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                    await api.delete(`/eventos/${eventoId}`)
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Evento excluído com sucesso!',
-                            color: 'white',
-                            confirmButtonColor: '#db9d00',
-                            background: '#16213e'
-                        })     
+                        await api.delete(`/eventos/${eventoId}`)
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Evento excluído com sucesso!',
+                                color: 'white',
+                                confirmButtonColor: '#db9d00',
+                                background: '#16213e'
+                            })     
                     } catch (error) {
                         Swal.fire({
                             icon: 'error',

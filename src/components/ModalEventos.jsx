@@ -18,7 +18,7 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
           )}
 
           {/* Conteúdo texto à direita */}
-          <div className='flex flex-col gap-[30px]'>
+          < div className='flex flex-col gap-[30px]'>
             <div className='flex flex-col gap-[5px]'>
               <h2 className='font-bold text-[28px]'>{evento.titulo}</h2>
               <p>{evento.dataFim ? (
