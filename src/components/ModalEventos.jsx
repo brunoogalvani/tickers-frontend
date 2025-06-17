@@ -46,7 +46,8 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
             </div>
           </div>
         </div>
-        <button className='bg-white/20 px-4 py-2 float-end mt-5 rounded-xl hover:bg-white/15 transition'>Comprar</button>
+        <button className='bg-white/20 px-4 py-2 float-end mt-5 rounded-xl hover:bg-white/15 transition'>Adicionar ao Carrinho</button>
+                
       </div>
     </div>
   );
