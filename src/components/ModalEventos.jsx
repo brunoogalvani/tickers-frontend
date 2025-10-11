@@ -17,7 +17,7 @@ const ModalEventos = ({ isOpen, onClose, evento }) => {
             <div style={styles.imagePlaceholder}>Sem imagem</div>
           )}
 
-          {/* Conteúdo texto à direita */}
+         
           < div className='flex flex-col gap-[30px]'>
             <div className='flex flex-col gap-[5px]'>
               <h2 className='font-bold text-[28px]'>{evento.titulo}</h2>

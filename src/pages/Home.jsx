@@ -89,7 +89,7 @@
 
     useEffect(() => {
       getEventos()
-    }, [eventos]);
+    }, []);
 
     useEffect(() => {
       getUser()

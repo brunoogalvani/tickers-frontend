@@ -7,6 +7,7 @@ import PaginaUsuario from './pages/PaginaUsuario.jsx'
 import Admin from './pages/Admin.jsx'
 import Eventos from './pages/Eventos.jsx'
 import Carrinho from './pages/Carrinho.jsx'
+import Evento from './pages/Evento.jsx'
 function App() {
 
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/admin' element={<Admin />}></Route>
           <Route path='/eventos' element={<Eventos />}></Route>
           <Route path='/Carrinho' element={<Carrinho />}></Route>
+          <Route path='/evento/:idEvento' element={<Evento />}></Route>
       </Routes>
     </Router>
   )
