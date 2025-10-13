@@ -2,7 +2,7 @@ import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css"
 import { useEffect, useState } from "react"
 
-export default function Carousel({ imagens = [] }) {
+export default function Carousel({ eventos = [] }) {
   const [isPaused, setIsPaused] = useState(false)
 
   const [sliderRef, instanceRef] = useKeenSlider({
@@ -32,20 +32,27 @@ export default function Carousel({ imagens = [] }) {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {imagens?.map((img, index) => (
-        <div
-          key={index}
-          className="keen-slider__slide flex justify-center items-center overflow-visible"
-        >
-          <div className="w-[95%] h-full rounded-xl overflow-hidden shadow-2xl shadow-black/90 transition-transform hover:scale-[1.02] duration-300">
-            <img
-              src={img}
-              alt={`Slide ${index}`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      ))}
+{eventos?.map((evento, index) => (
+  <div key={index} className="keen-slider__slide flex justify-center items-center overflow-visible">
+    <div className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-2xl shadow-black/90 transition-transform hover:scale-[1.02] duration-300">
+      <img
+        src={evento.imagemCapa}
+        alt={evento.titulo}
+        className="w-full h-full object-cover"
+      />
+
+      {/* Overlay com informações do evento */}
+      <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/90 to-transparent px-4 py-6 text-white flex flex-col justify-end">
+        <h2 className="text-4xl font-bold">{evento.titulo}</h2>
+        <p className="text-base">{evento.dataInicio} às {evento.horaInicio}</p>
+        <p className="text-base">{evento.local?.cidade}, {evento.local?.estado}</p>
+      </div>
+
+    </div>
+  </div>
+))}
+
+
 
 
       <button
