@@ -38,7 +38,27 @@ export default function Evento() {
     }
   }
 
- if (!evento) {
+  const MapaEvento = ({ evento }) => {
+    // Monta o endereço completo
+    const enderecoCompleto = `${evento.local.endereco}, ${evento.local.cidade}, ${evento.local.estado}, ${evento.local.cep}`;
+    const enderecoEncoded = encodeURIComponent(enderecoCompleto);
+    
+    return (
+      <div className="w-full h-96 rounded-lg overflow-hidden">
+        <iframe
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          style={{ border: 0 }}
+          src={`https://www.google.com/maps?q=${enderecoEncoded}&output=embed`}
+          allowFullScreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    );
+  };
+
+ if (!evento || !user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
@@ -94,7 +114,7 @@ export default function Evento() {
               <div>
                 <p className="text-sm text-gray-500 font-medium">Data</p>
                 <p className="text-lg font-semibold text-gray-900">{evento.dataInicio}</p>
-                <p className="text-sm text-gray-600">{evento.horario}</p>
+                <p className="text-sm text-gray-600">{evento.horaInicio}</p>
               </div>
             </div>
 
@@ -115,7 +135,15 @@ export default function Evento() {
               </div>
               <div>
                 <p className="text-sm text-gray-500 font-medium">Ingressos Disponíveis</p>
-                <p className="text-lg font-semibold text-gray-900">{evento.ingressosDisponiveis} lugares</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {evento.qtdIngressos === 0 ? (
+                    "Ingressos indisponíveis"
+                  ) : evento.qtdIngressos === 1 ? (
+                    `${evento.qtdIngressos} lugar`
+                  ) : (
+                    `${evento.qtdIngressos} lugares`
+                  )}
+                </p>
               </div>
             </div>
 
@@ -125,7 +153,13 @@ export default function Evento() {
               </div>
               <div>
                 <p className="text-sm text-gray-500 font-medium">Valor do Ingresso</p>
-                <p className="text-lg font-semibold text-gray-900">{evento.preco}</p>
+                <p className="text-lg font-semibold text-gray-900">
+                  {evento.preco==0 ? (
+                    "Ingresso Gratuito" 
+                  ) : (
+                    Intl.NumberFormat('pt-BR', {style: 'currency',currency: 'BRL'}).format(evento.preco)
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -136,6 +170,10 @@ export default function Evento() {
             <p className="text-gray-700 leading-relaxed text-lg">
               {evento.descricao}
             </p>
+          </div>
+
+          <div className="mb-8">
+            <MapaEvento evento={evento} />
           </div>
 
           
