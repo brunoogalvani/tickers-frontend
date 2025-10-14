@@ -1,8 +1,10 @@
 import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css"
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
 
 export default function Carousel({ eventos = [] }) {
+  const navigate = useNavigate()
   const [isPaused, setIsPaused] = useState(false)
 
   const [sliderRef, instanceRef] = useKeenSlider({
@@ -34,7 +36,7 @@ export default function Carousel({ eventos = [] }) {
     >
 {eventos?.map((evento, index) => (
   <div key={index} className="keen-slider__slide flex justify-center items-center overflow-visible">
-    <div className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-2xl shadow-black/90 transition-transform hover:scale-[1.02] duration-300">
+    <div onClick={() => navigate(`/evento/${evento.id}`)} className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-2xl shadow-black/90 transition-transform hover:scale-[1.02] duration-300 cursor-pointer">
       <img
         src={evento.imagemCapa}
         alt={evento.titulo}

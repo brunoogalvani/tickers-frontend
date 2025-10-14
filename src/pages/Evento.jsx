@@ -1,27 +1,42 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from '../services/api.js'
+import { id } from "date-fns/locale";
+import { useNavigate } from 'react-router-dom'
 
 export default function Evento() {
   const { idEvento } = useParams();
   const [evento, setEvento] = useState(null);
+  const [user, setUser] = useState(null)
+  const [userId, setUserId] = useState("")
+  const navigate = useNavigate()
 
   useEffect(() => {
     getEvento();
   }, [idEvento]);
 
+  useEffect(() => {
+    getCreator(userId);
+  }, [evento]);
+  
   async function getEvento() {
-      try {
-        const response = await api.get(`/eventos/${idEvento}`)
-        setEvento(response.data)
-      } catch (error) {
-        console.error("Erro ao encontrar o evento", error)
-      }
+    try {
+      const response = await api.get(`/eventos/${idEvento}`)
+      setEvento(response.data)
+      setUserId(response.data.criadoPorId)
+    } catch (error) {
+      console.error("Erro ao encontrar o evento", error)
     }
-
-
-
-
+  }
+  
+  async function getCreator(id) {
+    try {
+      const user = await api.get(`/users/${id}`)
+      setUser(user.data)
+    } catch (error) {
+      console.error("Erro ao encontrar o usuário", error)
+    }
+  }
 
  if (!evento) {
     return (
@@ -67,7 +82,7 @@ export default function Evento() {
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">
                   {evento.titulo}
                 </h1>
-                <p className="text-gray-600">Por {evento.organizador}</p>
+                <p className="text-gray-600">Por {user.nome}</p>
               </div>
             </div>
           </div>
@@ -127,7 +142,7 @@ export default function Evento() {
 
           {/* Call to Action */}
           <div className="flex flex-col sm:flex-row gap-4">
-          <button className="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">              🎟️ Comprar Ingresso
+          <button onClick={() => navigate('/')} className="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">              🎟️ Comprar Ingresso
             </button>
             <button className="sm:w-auto px-8 border-2 border-gray-300 hover:border-purple-600 text-gray-700 hover:text-purple-600 font-semibold py-4 rounded-xl transition-all">
               ℹ️ Mais Informações
