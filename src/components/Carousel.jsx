@@ -30,13 +30,13 @@ export default function Carousel({ eventos = [] }) {
   return (
     <div
       ref={sliderRef}
-      className="relative keen-slider w-full h-[500px] mt-10 mb-10 overflow-visible "
+      className="relative keen-slider w-full h-[500px] mt-10 mb-10 overflow-visible"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
 {eventos?.map((evento, index) => (
   <div key={index} className="keen-slider__slide flex justify-center items-center overflow-visible">
-    <div onClick={() => navigate(`/evento/${evento.id}`)} className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-2xl shadow-black/90 transition-transform hover:scale-[1.02] duration-300 cursor-pointer">
+    <div onClick={() => navigate(`/evento/${evento.id}`)} className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-lg shadow-black/90 transition-transform hover:scale-[1.02] duration-300 cursor-pointer">
       <img
         src={evento.imagemCapa}
         alt={evento.titulo}

@@ -63,9 +63,7 @@ export default function Evento() {
       
         <div className="absolute top-6 right-6 flex gap-3">
           
-          <button className="bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all" title="Compartilhar">
-            <span className="text-2xl">📤</span>
-          </button>
+          
         </div>
       </div>
 
@@ -82,12 +80,12 @@ export default function Evento() {
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">
                   {evento.titulo}
                 </h1>
-                <p className="text-gray-600">Por {user.nome}</p>
+                <p className="text-gray-600">Por {user?.nome}</p> 
               </div>
             </div>
           </div>
 
-          {/* Grid de Informações */}
+         
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
               <div className="bg-purple-100 p-3 rounded-lg text-2xl">
@@ -132,7 +130,7 @@ export default function Evento() {
             </div>
           </div>
 
-          {/* Descrição */}
+         
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Sobre o Evento</h2>
             <p className="text-gray-700 leading-relaxed text-lg">
@@ -140,7 +138,7 @@ export default function Evento() {
             </p>
           </div>
 
-          {/* Call to Action */}
+          
           <div className="flex flex-col sm:flex-row gap-4">
           <button onClick={() => navigate('/')} className="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">              🎟️ Comprar Ingresso
             </button>
@@ -151,7 +149,7 @@ export default function Evento() {
         </div>
       </div>
 
-      {/* Espaçamento inferior */}
+      
       <div className="h-20"></div>
     </div>
   );
