@@ -150,7 +150,7 @@ export default function Evento() {
 
          
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
               <div className="bg-purple-100 p-3 rounded-lg text-2xl">
                 📅
               </div>
@@ -161,36 +161,7 @@ export default function Evento() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
-              <div className="bg-blue-100 p-3 rounded-lg text-2xl">
-                📍
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium">Local</p>
-                <p className="text-lg font-semibold text-gray-900">{evento.local.nome}</p>
-                <p className="text-sm text-gray-600">{evento.local.endereco}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
-              <div className="bg-green-100 p-3 rounded-lg text-2xl">
-                👥
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 font-medium">Ingressos Disponíveis</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {evento.qtdIngressos === 0 ? (
-                    "Ingressos indisponíveis"
-                  ) : evento.qtdIngressos === 1 ? (
-                    `${evento.qtdIngressos} lugar`
-                  ) : (
-                    `${evento.qtdIngressos} lugares`
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
               <div className="bg-orange-100 p-3 rounded-lg text-2xl">
                 💰
               </div>
@@ -207,16 +178,27 @@ export default function Evento() {
             </div>
           </div>
 
-         
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Sobre o Evento</h2>
             <p className="text-gray-700 leading-relaxed text-lg">
               {evento.descricao}
             </p>
           </div>
-
+          
           <div className="mb-8">
-            <MapaEvento evento={evento} />
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Local do Evento</h2>
+            <div className="flex flex-col p-4 bg-gray-50 gap-4  rounded-xl">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 p-3 rounded-lg text-2xl">
+                  📍
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-gray-900">{evento.local.nome}</p>
+                  <p className="text-sm text-gray-600">{evento.local.endereco}</p>
+                </div>
+              </div>
+              <MapaEvento evento={evento} />
+            </div>
           </div>
 
           

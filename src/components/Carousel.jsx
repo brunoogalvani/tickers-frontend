@@ -30,29 +30,29 @@ export default function Carousel({ eventos = [] }) {
   return (
     <div
       ref={sliderRef}
-      className="relative keen-slider w-full h-[500px] mt-20 mb-10 overflow-visible"
+      className="relative keen-slider w-full h-[550px] mt-20 mb-10 overflow-visible"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-{eventos?.map((evento, index) => (
-  <div key={index} className="keen-slider__slide flex justify-center items-center overflow-visible">
-    <div onClick={() => navigate(`/evento/${evento.id}`)} className="relative w-[95%] h-full rounded-xl overflow-hidden shadow-lg shadow-black/90 transition-transform hover:scale-[1.02] duration-300 cursor-pointer">
-      <img
-        src={evento.imagemCapa}
-        alt={evento.titulo}
-        className="w-full h-full object-cover"
-      />
+      {eventos?.map((evento, index) => (
+        <div key={index} className="keen-slider__slide flex justify-center items-center overflow-visible">
+          <div onClick={() => navigate(`/evento/${evento.id}`)} className="relative w-[95%] h-[90%] rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-300 cursor-pointer">
+            <img
+              src={evento.imagemCapa}
+              alt={evento.titulo}
+              className="w-full h-full object-cover"
+            />
 
-      {/* Overlay com informações do evento */}
-      <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/90 to-transparent px-4 py-6 text-white flex flex-col justify-end">
-        <h2 className="text-4xl font-bold">{evento.titulo}</h2>
-        <p className="text-base">{evento.dataInicio} às {evento.horaInicio}</p>
-        <p className="text-base">{evento.local?.cidade}, {evento.local?.estado}</p>
-      </div>
+            {/* Overlay com informações do evento */}
+            <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/90 to-transparent px-4 py-6 text-white flex flex-col justify-end">
+              <h2 className="text-4xl font-bold">{evento.titulo}</h2>
+              <p className="text-base">{evento.dataInicio} às {evento.horaInicio}</p>
+              <p className="text-base">{evento.local?.cidade}, {evento.local?.estado}</p>
+            </div>
 
-    </div>
-  </div>
-))}
+          </div>
+        </div>
+      ))}
 
 
 
