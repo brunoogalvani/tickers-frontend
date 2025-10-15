@@ -30,7 +30,7 @@ export default function Carousel({ eventos = [] }) {
   return (
     <div
       ref={sliderRef}
-      className="relative keen-slider w-full h-[500px] mt-10 mb-10 overflow-visible"
+      className="relative keen-slider w-full h-[500px] mt-20 mb-10 overflow-visible"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

@@ -39,7 +39,7 @@ export default function Evento() {
   }
 
   const MapaEvento = ({ evento }) => {
-    // Monta o endereço completo
+    
     const enderecoCompleto = `${evento.local.endereco}, ${evento.local.cidade}, ${evento.local.estado}, ${evento.local.cep}`;
     const enderecoEncoded = encodeURIComponent(enderecoCompleto);
     
@@ -62,7 +62,7 @@ export default function Evento() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600"></div>
           <p className="mt-4 text-gray-600 font-medium">Carregando evento...</p>
         </div>
       </div>

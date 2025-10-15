@@ -21,6 +21,8 @@
         setEventoSelecionado(null);
       };
 
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);  
     const userRole = sessionStorage.getItem('userRole')
     const userID = sessionStorage.getItem('userID')
     const navigate = useNavigate()
@@ -109,6 +111,27 @@
       }
     }, []);
 
+  useEffect(() => {
+    const controlHeader = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlHeader);
+    return () => {
+      window.removeEventListener('scroll', controlHeader);
+    };
+  }, [lastScrollY]);
+
     async function getEventos() {
       try {
         const response = await api.get('/eventos')
@@ -140,29 +163,36 @@
     }
 
     return (
-  <div className="min-h-screen text-gray-800 bg-[radial-gradient(circle_at_center,_#ffffff,_#f2f2f2)]">
+  <div className="min-h-screen bg-light-background text-light-text-main">
 
-    <header className='flex justify-between items-center text-stone-800  h-[65px] bg-orange-200 shadow-lg shadow-orange-300/20'>
-    <img className='h-40 -ml-2' src={TickersLogo} alt="Logotipo Tickers" />
-      <div className='flex items-center gap-4 '>
+<header className={`fixed top-0 left-0 right-0 z-50 flex  items-center h-[60px] px-8 bg-black backdrop-blur-sm shadow-lg shadow-light-secondary/30 transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+
+    
+  <img className='h-40 -ml-3' src={TickersLogo} alt="Logotipo Tickers" />
+  
+      <div className='flex justify-start items-center gap-8 ml-[200]'>
         
-        <div className='h-[35px] flex items-center gap-1 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
+        <div className='h-[40px] w-[450px] flex justify-start  items-center gap-2 border-gray-200 rounded-lg p-2 bg-gray-200/40 focus-within:ring-2 focus-within:ring-light-primary'>
           <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
           </svg>
-          <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
+          <input className='w-[350px] bg-transparent text-white text-[16px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
         </div>
 
 
-        <div className="relative w-[150px] group ml-60">
+        
+      </div>
+
+      <div className='flex justify-evenly items-center ml-[620px] w-[350px] gap-1'>
+          <div className="flex items-center w-[150px] group ml-4">
           <div className="relative">
             <select
               name="categoria"
-              className="cursor-pointer block appearance-none w-[150px] bg-gray-600 text-white py-3 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="cursor-pointer block appearance-none w-full bg-white border-gray-200 text-light-main py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-light-primary"
               defaultValue=""
               onChange={(e) => {
                 setCategoriaSelecionada(e.target.value);
-                // Aguarda o menu fechar para reverter a rotação
+                
                 setTimeout(() => setIsRotated(false), 150);
               }}
               onFocus={() => setIsRotated(true)}
@@ -174,7 +204,7 @@
               ))}
             </select>
 
-            {/* Ícone da seta */}
+            
             <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 transition-transform duration-300 ${isRotated ? 'rotate-180' : ''}`}>
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -182,10 +212,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div className='flex justify-evenly items-center w-[350px]'>
-        
       
         <div className='flex'>
           {
@@ -222,7 +248,6 @@
                 </svg>
                 <div className='text-start'>
                   <p className='text-gray-300 font-bold'>Entrar</p>
-                  <span className='text-black font-bold'>Cadastrar-se</span>
                 </div>
               </button>
             )
@@ -244,20 +269,19 @@
           <section key={estado} className="mb-10">
             <h2 className="text-gray-900 text-2xl font-bold mb-4">Eventos {nomesEstados [estado] || estado}</h2>
             <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))' }}
-            >
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
               {eventosEstado.map(evento => (
-                <div key={evento.id}  onClick={() => navigate(`/evento/${evento.id}`)} style={{cursor: 'pointer'}} className="w-[360px] h-[250px] 
-                bg-orange-200 shadow-lg shadow-orange-300/20 rounded-lg text-black/90 cursor-pointer hover:scale-[103%] duration-150">
-                  <div className="relative">
-                    <img src={evento.imagemCapa} className="rounded-lg  rounded-b-none w-[360px] h-[160px]" />
+                <div key={evento.id}  onClick={() => navigate(`/evento/${evento.id}`)} style={{cursor: 'pointer'}} className="
+                bg-transparent shadow-xl shadow-black-500/20 rounded-lg text-black/90 cursor-pointer hover:scale-[103%] duration-150 overflow-hidden flex flex-col">
+                  <div className="relative flex-shrink-0">
+                    <img src={evento.imagemCapa} className="rounded-lg  rounded-b-none w-full h-[160px] object-cover rounded-t-lg" />
                     <h1 className="absolute top-2 left-2 bg-white/80 text-black font-bold text-xs px-2 py-1 rounded">{evento.categoria}</h1>
                   </div>
 
-                  <div className="flex flex-col justify-evenly  h-[90px] ml-3">
+                  <div className="flex flex-col gap-1 p-3 flex-1">
                     <h1 className="text-zinc-900 text-[14px]">{evento.dataInicio}</h1>
-                    <h1 className="w-[330px] font-bold truncate">{evento.titulo}</h1>
+                    <h1 className="font-bold truncate">{evento.titulo}</h1>
                     <h1>{evento.local.nome}, {evento.local.cidade}</h1>
                   </div>
                 </div>
