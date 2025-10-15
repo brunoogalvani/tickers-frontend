@@ -112,7 +112,7 @@
     async function getEventos() {
       try {
         const response = await api.get('/eventos')
-        setEventos(response.data)
+        setEventos(response.data.filter(evento => evento.status === 'ativo'))
       } catch (error) {
         console.error("Erro ao retornar os eventos", error)
       }
@@ -142,16 +142,19 @@
     return (
   <div className="min-h-screen text-gray-800 bg-[radial-gradient(circle_at_center,_#ffffff,_#f2f2f2)]">
 
-    <header className='flex justify-between items-center text-stone-800 p-4 h-[80px] bg-orange-200 shadow-lg shadow-orange-300/20'>
-      <div className='flex justify-between items-center w-[750px]'>
-        <img className='h-60' src={TickersLogo} alt="Logotipo Tickers" />
-        <div className='h-[35px] flex items-center gap-2 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
+    <header className='flex justify-between items-center text-stone-800  h-[65px] bg-orange-200 shadow-lg shadow-orange-300/20'>
+    <img className='h-40 -ml-2' src={TickersLogo} alt="Logotipo Tickers" />
+      <div className='flex items-center gap-4 '>
+        
+        <div className='h-[35px] flex items-center gap-1 border border-transparent rounded-[15px] p-2 bg-gray-800/30'>
           <svg className="h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
           </svg>
           <input className='w-[350px] bg-transparent text-gray-300 text-[14px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
         </div>
-        <div className="relative w-[150px] group">
+
+
+        <div className="relative w-[150px] group ml-60">
           <div className="relative">
             <select
               name="categoria"
@@ -180,6 +183,7 @@
           </div>
         </div>
       </div>
+
       <div className='flex justify-evenly items-center w-[350px]'>
         
       

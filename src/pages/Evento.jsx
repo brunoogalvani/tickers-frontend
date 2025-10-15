@@ -71,13 +71,28 @@ export default function Evento() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
-      
+  
       <div className="relative h-96 overflow-hidden">
         <img 
           src={evento.imagemCapa} 
           alt={evento.titulo} 
           className="w-full h-full object-cover"
         />
+        <button onClick={() => navigate(`/`)}
+        
+        className="absolute top-6 left-6 z-10 flex items-center gap-2 bg-white/90 hover:bg-white text-gray-800 font-semibold py-2 px-4  shadow-lg transition-all transform hover:scale-105 rounded-full"
+  >
+    <svg
+          className="w-6 h-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+    
+  </button>
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         
       
@@ -178,7 +193,8 @@ export default function Evento() {
 
           
           <div className="flex flex-col sm:flex-row gap-4">
-          <button onClick={() => navigate('/')} className="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">              🎟️ Comprar Ingresso
+          <button onClick={() => navigate('/')} className="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all transform hover:scale-105">    
+           🎟️ Comprar Ingresso
             </button>
             <button className="sm:w-auto px-8 border-2 border-gray-300 hover:border-purple-600 text-gray-700 hover:text-purple-600 font-semibold py-4 rounded-xl transition-all">
               ℹ️ Mais Informações
