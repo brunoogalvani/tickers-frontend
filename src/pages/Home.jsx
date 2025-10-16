@@ -132,43 +132,43 @@
     };
   }, [lastScrollY]);
 
-    async function getEventos() {
-      try {
-        const response = await api.get('/eventos')
-        setEventos(response.data.filter(evento => evento.status === 'ativo'))
-      } catch (error) {
-        console.error("Erro ao retornar os eventos", error)
-      }
+  async function getEventos() {
+    try {
+      const response = await api.get('/eventos')
+      setEventos(response.data.filter(evento => evento.status === 'ativo'))
+    } catch (error) {
+      console.error("Erro ao retornar os eventos", error)
     }
+  }
 
-    async function getUser() {
-      if (!userID) return
-      try {
-        const response = await api.get(`/users/${userID}`)
-        setUsername(response.data.nome)
-       
-      } catch (error) {
-        console.error("Erro ao retornar usuário", error)
-      }
+  async function getUser() {
+    if (!userID) return
+    try {
+      const response = await api.get(`/users/${userID}`)
+      setUsername(response.data.nome)
+      
+    } catch (error) {
+      console.error("Erro ao retornar usuário", error)
     }
+  }
 
-    function toggleDropdown() {
-      setIsDropdownOpen(!isDropdownOpen)
-    }
+  function toggleDropdown() {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
 
-    function logout() {
-      navigate('/')
-      sessionStorage.setItem('userID', '')
-      sessionStorage.setItem('userRole', '')
-    }
+  function logout() {
+    navigate('/')
+    sessionStorage.setItem('userID', '')
+    sessionStorage.setItem('userRole', '')
+  }
 
-    return (
+  return (
   <div className="min-h-screen bg-light-background text-light-text-main">
 
-<header className={`fixed top-0 left-0 right-0 z-50 flex  items-center h-[60px] px-8 bg-black backdrop-blur-sm shadow-lg shadow-light-secondary/30 transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 flex items-center h-[70px] px-8 bg-black backdrop-blur-sm shadow-lg shadow-light-secondary/30 transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
 
     
-  <img className='h-40 -ml-3' src={TickersLogo} alt="Logotipo Tickers" />
+      <img className='h-40 -ml-3' src={TickersLogo} alt="Logotipo Tickers" />
   
       <div className='flex justify-start items-center gap-8 ml-[200]'>
         
@@ -179,12 +179,10 @@
           <input className='w-[350px] bg-transparent text-white text-[16px] outline-none' type="text" onChange={(e) => setBusca(e.target.value.toLowerCase())} />
         </div>
 
-
-        
       </div>
 
-      <div className='flex justify-evenly items-center ml-[620px] w-[350px] gap-1'>
-          <div className="flex items-center w-[150px] group ml-4">
+      <div className='flex justify-evenly items-center ml-[620px] w-[450px] gap-1'>
+        <div className="flex items-center w-[150px] group ml-4">
           <div className="relative">
             <select
               name="categoria"
@@ -206,7 +204,7 @@
 
             
             <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 transition-transform duration-300 ${isRotated ? 'rotate-180' : ''}`}>
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </div>
@@ -222,7 +220,7 @@
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
                   <div className='text-start'>
-                    <p className='text-black font-bold'>Bem-vindo!</p>
+                    <p className='text-white font-bold'>Bem-vindo!</p>
                     <span className='text-white font-bold'>{username}</span>
                   </div>
                 </button>
@@ -253,11 +251,13 @@
             )
           }
         </div>
-        <button onClick={() => navigate("/Carrinho")} className='hover:opacity-75 transition'>
-          <svg className="w-7 h-7 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
-          </svg>
-        </button>
+        { userID ? (
+          <button onClick={() => navigate("/Carrinho")} className='hover:opacity-75 transition'>
+            <svg className="w-7 h-7 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+            </svg>
+          </button>
+        ) : null}
       </div>
     </header>
           

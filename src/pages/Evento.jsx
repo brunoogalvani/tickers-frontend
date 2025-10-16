@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from '../services/api.js'
 import { id } from "date-fns/locale";
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function Evento() {
   const { idEvento } = useParams();
@@ -53,16 +54,26 @@ export default function Evento() {
   }
 
   async function toggleFavorito() {
-    try {
-      if (isFavorito) {
-        await api.delete(`/users/${userID}/favoritos/${idEvento}`)
-        setIsFavorito(false)
-      } else {
-        await api.post(`/users/${userID}/favoritos`, { eventoId: idEvento })
-        setIsFavorito(true)
+    if (userID) {
+      try {
+        if (isFavorito) {
+          await api.delete(`/users/${userID}/favoritos/${idEvento}`)
+          setIsFavorito(false)
+        } else {
+          await api.post(`/users/${userID}/favoritos`, { eventoId: idEvento })
+          setIsFavorito(true)
+        }
+      } catch (error) {
+        console.error("Erro ao alternar favorito", error)
       }
-    } catch (error) {
-      console.error("Erro ao alternar favorito", error)
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'É necessário logar para favoritar um evento',
+        color: 'black',
+        confirmButtonColor: '#0b5394',
+        background: '#e9eae8'
+      })
     }
   }
 
